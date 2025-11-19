@@ -7,21 +7,18 @@
 
 set -e  # Exit on any error
 
-echo "🚂 Starting Railway deployment..."
+echo -e "🚂 Starting Railway deployment...\n"
 
 # Initialize a new project on Railway (uncomment if needed)
 railway init -n "agno"
 
-# Deploy PgVector database first (it needs to exist before we reference it)
-echo "📦 Deploying PgVector database..."
+echo -e "📦 Deploying PgVector database...\n"
 railway deploy -t 3jJFCA
 
-# Wait for database to be provisioned
-echo "⏳ Waiting 10 seconds for database to be created..."
+echo -e "⏳ Waiting 10 seconds for database to be created...\n"
 sleep 10
 
-# Create the application service with environment variables already set
-echo "🔧 Creating application service with environment variables..."
+echo -e "🔧 Creating application service with environment variables...\n"
 railway add --service agent_os \
   --variables "DB_DRIVER=postgresql+psycopg" \
   --variables 'DB_USER=${{pgvector.PGUSER}}' \
@@ -29,16 +26,17 @@ railway add --service agent_os \
   --variables 'DB_HOST=${{pgvector.PGHOST}}' \
   --variables 'DB_PORT=${{pgvector.PGPORT}}' \
   --variables 'DB_DATABASE=${{pgvector.PGDATABASE}}' \
-  --variables "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}"
+  --variables "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" \
+  --variables "OPENAI_API_KEY=${OPENAI_API_KEY}" \
+  --variables "EXA_API_KEY=${EXA_API_KEY}"
 
-# Deploy the application
-echo "🚀 Deploying application..."
+echo -e "🚀 Deploying application...\n"
 railway up --service agent_os -d
 
-echo "🔗 Creating domain..."
+echo -e "🔗 Creating domain...\n"
 railway domain --service agent_os
 
-echo "Note: It may take upto 5 minutes for the domain to reach ready state while the application is deploying."
+echo -e "Note: It may take up to 5 minutes for the domain to reach ready state while the application is deploying.\n"
 
-echo "✅ Deployment complete!"
-echo "💡 Tip: Run 'railway logs --service agent_os' to view your application logs"
+echo -e "✅ Deployment complete!\n"
+echo -e "💡 Tip: Run 'railway logs --service agent_os' to view your application logs.\n"
