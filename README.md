@@ -107,7 +107,7 @@ This command will:
 To update the application, run the following command:
 
 ```sh
-./scripts/railway_up.sh
+railway up --service agent_os -d
 ```
 
 This command will rebuild and redeploy the docker image to your Railway service.
