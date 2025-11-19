@@ -10,9 +10,14 @@ For more information, checkout [Agno](https://agno.link/gh) and give it a ⭐️
 
 ## Quickstart
 
-Follow these steps to get your AgentOS up and running:
+Follow these steps to get your AgentOS up and running. This repository allows you to deploy your AgentOS in two environments:
 
-> Prerequisites: [docker desktop](https://www.docker.com/products/docker-desktop) should be installed and running.
+- Local using [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- Cloud using [Railway](https://railway.app)
+
+Make sure Docker Desktop is installed and running. And Railway CLI is installed for cloud deployment.
+
+Follow these steps to get your AgentOS up and running:
 
 ### Clone the repo
 
@@ -42,11 +47,6 @@ Note: We are using OpenAI to create embeddings for the knowledge base. So, pleas
 > You can use the `example.env` file as a template to create your own `.env` file.
 
 ## Starting the application
-
-This repository allows you to start the application in two environments:
-
-- Local using [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- Cloud using [Railway](https://railway.app)
 
 ### Local Setup
 
@@ -80,7 +80,15 @@ docker compose down
 
 ### Cloud Setup
 
-To deploy the application to Railway, run the following command:
+To deploy the application to Railway, run the following commands:
+
+1. Login to Railway:
+
+```sh
+railway login
+```
+
+2. Deploy the application:
 
 ```sh
 ./scripts/railway_up.sh
@@ -110,6 +118,7 @@ To delete the application, run the following command:
 
 ```sh
 railway down --service agent_os
+railway down --service pgvector
 ```
 
 Careful: This command will delete the AgentOS and PgVector database services from your Railway project.
@@ -122,14 +131,6 @@ To connect the AgnoUI to the AgentOS server:
 - Create a new AgentOS by clicking on the `+` button in the top right corner.
 - Enter the AgentOS URL and click on the `Connect` button.
 - You can add a local endpoint from your dev setup. To add the railway endpoint, you will be provided with a coupon code during the workshop.
-
-### Viewing the application logs
-
-To view the application logs, run the following command:
-
-```sh
-railway logs --service agent_os
-```
 
 ## Prebuilt Agents, Teams and Workflows
 
