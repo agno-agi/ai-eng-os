@@ -20,7 +20,7 @@ os_config_path = str(Path(__file__).parent.joinpath("config.yaml"))
 # Create AgentOS
 # ============================================================================
 agent_os = AgentOS(
-    id="mb-agent-os",
+    id="ai-eng-os",
     agents=[
         agno_mcp_agent,
         agno_knowledge_agent,

@@ -4,7 +4,7 @@ Welcome to your AgentOS: a robust, production-ready application for serving agen
 
 - An **AgentOS server** for serving agents, multi-agent teams and agentic workflows.
 - A **PostgreSQL database** for storing agent sessions, knowledge, and memories.
-- A set of **pre-built agents, teams and workflows** to use as a starting point.
+- A set of **pre-built Agents, Teams and Workflows** to use as a starting point.
 
 For more information, checkout [Agno](https://agno.link/gh) and give it a ⭐️
 
@@ -110,7 +110,7 @@ To update the application, run the following command:
 ./scripts/railway_up.sh
 ```
 
-This command will rebuild and redeploy the docker image to your Railway project.
+This command will rebuild and redeploy the docker image to your Railway service.
 
 ### Deleting the application
 
