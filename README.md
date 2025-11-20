@@ -182,7 +182,8 @@ The `/agents` folder contains pre-built agents that you can use as a starting po
 
 The `/teams` folder contains pre-built teams that you can use as a starting point.
 
-**Finance Team**: A team of agents that work together to analyze financial data.
+- **Finance Team**: A team of agents that work together to analyze financial data.
+- **Data Analysis Team**: A specialized team that combines SQL querying, data analysis, and report generation for comprehensive insights.
 
 The `/workflows` folder contains pre-built workflows that you can use as a starting point.
 

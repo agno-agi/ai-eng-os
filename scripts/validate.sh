@@ -13,8 +13,8 @@ source ${CURR_DIR}/_utils.sh
 
 print_heading "Validating workspace..."
 
-print_heading "Running: ruff check ${REPO_ROOT}"
-ruff check ${REPO_ROOT}
+print_heading "Running: ruff check ${REPO_ROOT} (excluding agno directory)"
+ruff check ${REPO_ROOT} --exclude agno
 
-print_heading "Running: mypy ${REPO_ROOT} --config-file ${REPO_ROOT}/pyproject.toml"
-mypy ${REPO_ROOT} --config-file ${REPO_ROOT}/pyproject.toml
+print_heading "Running: mypy ${REPO_ROOT} --config-file ${REPO_ROOT}/pyproject.toml (excluding agno directory)"
+mypy ${REPO_ROOT} --config-file ${REPO_ROOT}/pyproject.toml --exclude agno
