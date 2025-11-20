@@ -26,13 +26,35 @@ If you just want to try this out locally:
    ```
 
 5. **Open the docs** at `http://localhost:8000/docs`.
-6. **Connect Agno UI** to `http://localhost:8000` at [Agno UI](https://os.agno.com).
+6. **Connect AgentOS UI** to `http://localhost:8000` at [AgentOS UI](https://os.agno.com).
 
 Details for each step are below.
 
 ---
 
-## Prebuilt Agents, Teams and Workflows
+
+
+## 1. Environments You Can Use
+
+This repository lets you run AgentOS in two environments:
+
+- **Local** using [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- **Cloud** using [Railway](https://railway.app)
+
+Make sure Docker Desktop is installed and running. Install Railway CLI only if you plan to deploy to the cloud.
+
+---
+
+## 2. Clone the repo
+
+```sh
+git clone https://github.com/agno-agi/ai-eng-os.git
+cd ai-eng-os
+```
+
+---
+
+## 3.Prebuilt Agents, Teams and Workflows
 
 This repo includes several ready-to-use building blocks so you can try things quickly.
 
@@ -63,27 +85,7 @@ This repo includes several ready-to-use building blocks so you can try things qu
 
 ---
 
-## 1. Environments You Can Use
-
-This repository lets you run AgentOS in two environments:
-
-- **Local** using [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- **Cloud** using [Railway](https://railway.app)
-
-Make sure Docker Desktop is installed and running. Install Railway CLI only if you plan to deploy to the cloud.
-
----
-
-## 2. Clone the repo
-
-```sh
-git clone https://github.com/agno-agi/ai-eng-os.git
-cd ai-eng-os
-```
-
----
-
-## 3. Configure API keys
+## 4. Configure API keys
 
 We'll use Sonnet 4.5 as the default model, so you must export the `ANTHROPIC_API_KEY` environment variable:
 
@@ -105,7 +107,7 @@ export EXA_API_KEY="YOUR_API_KEY_HERE"
 
 ---
 
-## 4. Run the application locally
+## 5. Run the application locally
 
 ### Start with Docker Compose
 
@@ -126,7 +128,7 @@ Once started, you can:
 
 ### Connect the AgnoUI to the AgentOS server
 
-- Open the [Agno UI](https://os.agno.com)
+- Open the [AgentOS UI](https://os.agno.com)
 - Login and add `http://localhost:8000` as a new AgentOS. You can call it `Local AgentOS` (or any name you prefer).
 
 ### Stop the application
@@ -139,7 +141,7 @@ docker compose down
 
 ---
 
-## 5. Cloud deployment (Railway)
+## 6. Cloud Setup
 
 To deploy the application to Railway, run the following commands:
 
@@ -188,14 +190,14 @@ railway down --service pgvector
 
 To connect the AgnoUI to the AgentOS server running on Railway:
 
-- Open the [Agno UI](https://os.agno.com)
+- Open the [AgentOS UI](https://os.agno.com)
 - Create a new AgentOS by clicking on the `+` button in the top left corner.
 - Enter the Railway AgentOS URL and click on the `Connect` button.
 - You can also add a local endpoint from your dev setup. To add the Railway endpoint, you may be provided with a `coupon code` during the workshop.
 
 ---
 
-## 6. Development Setup (for contributors)
+## 7. Development Setup (for contributors)
 
 If you want to work on the codebase locally (beyond just running with Docker), set up a virtual environment.
 
@@ -227,7 +229,7 @@ source .venv/bin/activate
 
 ---
 
-## 7. Managing Python Dependencies
+## 8. Managing Python Dependencies
 
 If you need to add or update Python dependencies:
 
