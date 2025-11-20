@@ -12,7 +12,7 @@ For more information, checkout [Agno](https://agno.link/gh) and give it a ⭐️
 
 ---
 
-## TL;DR – Get Running Quickly
+## QuickStart Guide
 
 If you just want to try this out locally:
 
