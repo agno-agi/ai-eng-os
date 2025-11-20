@@ -3,6 +3,7 @@ FROM agnohq/python:3.12
 ARG USER=app
 ARG APP_DIR=/app
 ENV APP_DIR=${APP_DIR}
+ENV PYTHONPATH=${APP_DIR}
 
 # Create user and home directory
 RUN groupadd -g 61000 ${USER} \
