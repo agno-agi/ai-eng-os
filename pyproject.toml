@@ -18,6 +18,7 @@ dependencies = [
   "sqlalchemy",
   "yfinance",
   "youtube-transcript-api",
+  "parallel-web",
 ]
 
 [project.optional-dependencies]

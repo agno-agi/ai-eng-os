@@ -1,6 +1,6 @@
 from textwrap import dedent
 
-from agno.models.anthropic import Claude
+from agno.models.openai import OpenAIChat
 from agno.team.team import Team
 from agno.tools.reasoning import ReasoningTools
 
@@ -49,7 +49,7 @@ instructions = dedent("""\
 # ============================================================================
 finance_team = Team(
     name="Finance Team",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     members=[finance_agent, research_agent],
     tools=[ReasoningTools(add_instructions=True)],
     description=description,

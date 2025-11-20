@@ -3,9 +3,9 @@ from textwrap import dedent
 from typing import Dict, List, Optional
 
 from agno.agent import Agent
-from agno.models.anthropic import Claude
+from agno.models.openai import OpenAIChat
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.tools.exa import ExaTools
+from agno.tools.parallel import ParallelTools
 from agno.tools.hackernews import HackerNewsTools
 from agno.tools.reasoning import ReasoningTools
 from agno.workflow import Step, Workflow
@@ -20,7 +20,7 @@ from db.demo_db import demo_db
 hn_researcher = Agent(
     name="HN Researcher",
     role="Research trending topics and discussions on Hacker News",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     tools=[HackerNewsTools()],
     description=dedent("""\
         You are the HN Researcher — an agent that searches Hacker News for relevant discussions,
@@ -40,7 +40,7 @@ hn_researcher = Agent(
 web_researcher = Agent(
     name="Web Researcher",
     role="Search the web for current information and sources",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     tools=[DuckDuckGoTools()],
     description=dedent("""\
         You are the Web Researcher — an agent that searches the web for up-to-date information,
@@ -58,16 +58,16 @@ web_researcher = Agent(
 )
 
 exa_researcher = Agent(
-    name="Exa Researcher",
+    name="Parallel Researcher",
     role="Perform deep semantic search for high-quality content",
-    model=Claude(id="claude-sonnet-4-5"),
-    tools=[ExaTools(type="keyword")],
+    model=OpenAIChat(id="gpt-5-mini"),
+    tools=[ParallelTools(enable_search=True, enable_extract=True)],
     description=dedent("""\
-        You are the Exa Researcher — an agent that uses semantic search to find
+        You are the Parallel Researcher — an agent that uses semantic search to find
         high-quality, relevant content from across the web.
         """),
     instructions=dedent("""\
-        1. Use Exa's semantic search to find highly relevant, quality content.
+        1. Use Parallel's search and extract tools to find highly relevant, quality content.
         2. Focus on authoritative sources, in-depth articles, and expert analysis.
         3. Provide context and summaries of the most valuable findings.
         4. Include links to all sources.
@@ -83,7 +83,7 @@ exa_researcher = Agent(
 writer = Agent(
     name="Writer",
     role="Synthesize research into compelling content",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     tools=[ReasoningTools()],
     description=dedent("""\
         You are the Writer — an agent that synthesizes research findings into clear,
@@ -108,7 +108,7 @@ writer = Agent(
 reviewer = Agent(
     name="Reviewer",
     role="Review and refine content for quality and accuracy",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     description=dedent("""\
         You are the Reviewer — an agent that reviews content for quality, accuracy,
         clarity, and completeness.
@@ -167,7 +167,7 @@ web_research_step = Step(
     agent=web_researcher,
 )
 exa_research_step = Step(
-    name="Exa Research",
+    name="Parallel Research",
     agent=exa_researcher,
 )
 researcher_steps: List[Step] = [hn_research_step, web_research_step]

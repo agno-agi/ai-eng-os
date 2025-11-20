@@ -28,23 +28,17 @@ cd ai-eng-os
 
 ### Configure API keys
 
-We'll use sonnet 4.5 as the default model, please export the `ANTHROPIC_API_KEY` environment variable to get started.
-
-```sh
-export ANTHROPIC_API_KEY="YOUR_API_KEY_HERE"
-```
-
-Optionally, export the `OPENAI_API_KEY` and `EXA_API_KEY` environment variables to use OpenAI and Exa services:
+We'll use OpenAI models, please export the `OPENAI_API_KEY` environment variable to get started. We'll also be using Parallel Search to find high-quality content from across the web. To use Parallel Search, you need to export the `PARALLEL_API_KEY` environment variable. The API keys will be provided to you during the workshop.
 
 ```sh
 export OPENAI_API_KEY="YOUR_API_KEY_HERE"
-export EXA_API_KEY="YOUR_API_KEY_HERE"
+export PARALLEL_API_KEY="YOUR_API_KEY_HERE"
 ```
 
-**Note:** OpenAI is used to create embeddings for the knowledge base. To use the Agno Knowledge Agent, you **must** set `OPENAI_API_KEY`.
+**Note:** OpenAI is also used to create embeddings for the knowledge base. To use the Agno Knowledge Agent, you **must** set `OPENAI_API_KEY`.
 
 > [!TIP]
-> You can use the `example.env` file as a template to create your own `.env` file.
+> You can use the `example.env` file as a template to create your own `.env` file. But you will still need to export the API keys.
 
 ## Starting the application
 
@@ -164,6 +158,7 @@ The `/agents` folder contains pre-built agents that you can use as a starting po
 
 - **Web Search Agent**: A simple agent that can search the web.
 - **Agno Assist**: An agent that can help answer questions about Agno.
+
   - **Important:** Load the `agno_assist` knowledge base before using this agent by running:
 
     ```sh

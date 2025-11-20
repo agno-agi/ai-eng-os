@@ -10,6 +10,7 @@ from agents.research_agent import research_agent
 from agents.youtube_agent import youtube_agent
 from teams.finance_team import finance_team
 from workflows.research_workflow import research_workflow
+from workflows.business_profile import business_profile_workflow
 
 # ============================================================================
 # AgentOS Config
@@ -30,7 +31,7 @@ agent_os = AgentOS(
         youtube_agent,
     ],
     teams=[finance_team],
-    workflows=[research_workflow],
+    workflows=[research_workflow, business_profile_workflow],
     config=os_config_path,
 )
 app = agent_os.get_app()

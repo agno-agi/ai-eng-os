@@ -4,7 +4,7 @@ from textwrap import dedent
 from typing import Any, List
 
 from agno.agent import Agent
-from agno.models.anthropic import Claude
+from agno.models.openai import OpenAIChat
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.exa import ExaTools
 
@@ -44,7 +44,7 @@ else:
 research_agent = Agent(
     name="Research Agent",
     role="Assist with research and information synthesis",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     tools=tools,
     description=description,
     instructions=instructions,

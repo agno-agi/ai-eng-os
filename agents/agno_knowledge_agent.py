@@ -3,7 +3,7 @@ from textwrap import dedent
 from agno.agent import Agent
 from agno.knowledge.embedder.openai import OpenAIEmbedder
 from agno.knowledge.knowledge import Knowledge
-from agno.models.anthropic import Claude
+from agno.models.openai import OpenAIChat
 from agno.vectordb.pgvector import PgVector, SearchType
 
 from db.demo_db import demo_db
@@ -77,7 +77,7 @@ instructions = dedent(
 # ============================================================================
 agno_knowledge_agent = Agent(
     name="Agno Knowledge Agent",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     knowledge=knowledge,
     description=description,
     instructions=instructions,

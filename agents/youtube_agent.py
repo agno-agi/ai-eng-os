@@ -1,7 +1,7 @@
 from textwrap import dedent
 
 from agno.agent import Agent
-from agno.models.anthropic import Claude
+from agno.models.openai import OpenAIChat
 from agno.tools.youtube import YouTubeTools
 
 from db.demo_db import demo_db
@@ -26,7 +26,7 @@ instructions = dedent("""
 # ============================================================================
 youtube_agent = Agent(
     name="YouTube Agent",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     tools=[YouTubeTools()],
     description=description,
     instructions=instructions,

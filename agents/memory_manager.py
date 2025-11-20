@@ -1,7 +1,7 @@
 from textwrap import dedent
 
 from agno.agent import Agent
-from agno.models.anthropic import Claude
+from agno.models.openai import OpenAIChat
 
 from db.demo_db import demo_db
 
@@ -29,7 +29,7 @@ instructions = dedent(
 # ============================================================================
 memory_manager = Agent(
     name="Memory Manager",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     description=description,
     instructions=instructions,
     add_history_to_context=True,

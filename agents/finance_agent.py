@@ -1,7 +1,7 @@
 from textwrap import dedent
 
 from agno.agent import Agent
-from agno.models.anthropic import Claude
+from agno.models.openai import OpenAIChat
 from agno.tools.yfinance import YFinanceTools
 
 from db.demo_db import demo_db
@@ -47,7 +47,7 @@ instructions = dedent("""\
 finance_agent = Agent(
     name="Finance Agent",
     role="Handle financial data requests and market analysis",
-    model=Claude(id="claude-sonnet-4-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     tools=[YFinanceTools()],
     description=description,
     instructions=instructions,

@@ -26,9 +26,8 @@ railway add --service agent_os \
   --variables 'DB_HOST=${{pgvector.PGHOST}}' \
   --variables 'DB_PORT=${{pgvector.PGPORT}}' \
   --variables 'DB_DATABASE=${{pgvector.PGDATABASE}}' \
-  --variables "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" \
   --variables "OPENAI_API_KEY=${OPENAI_API_KEY}" \
-  --variables "EXA_API_KEY=${EXA_API_KEY}"
+  --variables "PARALLEL_API_KEY=${PARALLEL_API_KEY}"
 
 echo -e "🚀 Deploying application...\n"
 railway up --service agent_os -d
