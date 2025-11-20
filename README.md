@@ -1,8 +1,6 @@
 # AgentOS
 
-Welcome to AgentOS: a robust, production-ready application for serving agents, multi-agent teams, and agentic workflows.
-
-this repository includes:
+Welcome to your AgentOS: a robust, production-ready application for serving agents, multi-agent teams and agentic workflows. It includes:
 
 - An **AgentOS server** for serving agents, multi-agent teams and agentic workflows.
 - A **PostgreSQL database** for storing agent sessions, knowledge, and memories.
