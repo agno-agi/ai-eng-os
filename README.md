@@ -11,7 +11,7 @@ this repository includes:
 For more information, checkout [Agno](https://agno.link/gh) and give it a ⭐️
 ---
 
-## QuickStart Guide
+## QuickStart
 
 If you just want to try this out locally:
 
