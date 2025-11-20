@@ -1,6 +1,8 @@
 # AgentOS
 
-Welcome to your AgentOS: a robust, production-ready application for serving agents, multi-agent teams and agentic workflows. It includes:
+Welcome to your AgentOS: a robust, production-ready application for serving agents, multi-agent teams, and agentic workflows.
+
+It includes:
 
 - An **AgentOS server** for serving agents, multi-agent teams and agentic workflows.
 - A **PostgreSQL database** for storing agent sessions, knowledge, and memories.
@@ -8,55 +10,60 @@ Welcome to your AgentOS: a robust, production-ready application for serving agen
 
 For more information, checkout [Agno](https://agno.link/gh) and give it a ⭐️
 
-## Quickstart
+---
 
-Follow these steps to get your AgentOS up and running. This repository allows you to deploy your AgentOS in two environments:
+## TL;DR – Get Running Quickly
 
-- Local using [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- Cloud using [Railway](https://railway.app)
+If you just want to try this out locally:
 
-Make sure Docker Desktop is installed and running. And Railway CLI is installed for cloud deployment.
+1. **Install Docker Desktop** and make sure it is running.
+2. **Clone this repo** and `cd` into it.
+3. **Set your API keys** (at least `ANTHROPIC_API_KEY`, and `OPENAI_API_KEY` if you want the knowledge agent).
+4. **Start everything** with `docker compose up -d`.
+5. **Open the docs** at `http://localhost:8000/docs`.
+6. **Connect Agno UI** to `http://localhost:8000` at [Agno UI](https://os.agno.com).
 
-Follow these steps to get your AgentOS up and running:
+Details for each step are below.
 
-### Clone the repo
+---
 
-```sh
+## 1. Environments You Can Use
+
+This repository lets you run AgentOS in two environments:
+
+- **Local** using [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- **Cloud** using [Railway](https://railway.app)
+
+Make sure Docker Desktop is installed and running. Install Railway CLI only if you plan to deploy to the cloud.
+
+---
+
+## 2. Clone the repo
+
 git clone https://github.com/agno-agi/ai-eng-os.git
-cd ai-eng-os
-```
+cd ai-eng-os---
 
-### Configure API keys
+## 3. Configure API keys
 
-We'll use sonnet 4.5 as the default model, please export the `ANTHROPIC_API_KEY` environment variable to get started.
+We'll use Sonnet 4.5 as the default model, so you must export the `ANTHROPIC_API_KEY` environment variable:
 
-```sh
-export ANTHROPIC_API_KEY="YOUR_API_KEY_HERE"
-```
+export ANTHROPIC_API_KEY="YOUR_API_KEY_HERE"Optionally, export the `OPENAI_API_KEY` and `EXA_API_KEY` environment variables to use OpenAI and Exa services:
 
-Optional: Export the `OPENAI_API_KEY` and `EXA_API_KEY` environment variables to use OpenAI and Exa services:
-
-```sh
 export OPENAI_API_KEY="YOUR_API_KEY_HERE"
-export EXA_API_KEY="YOUR_API_KEY_HERE"
-```
-
-Note: We are using OpenAI to create embeddings for the knowledge base. So, please export the `OPENAI_API_KEY` environment variable to use the Agno Knowledge Agent.
+export EXA_API_KEY="YOUR_API_KEY_HERE"**Note:** OpenAI is used to create embeddings for the knowledge base. To use the Agno Knowledge Agent, you **must** set `OPENAI_API_KEY`.
 
 > [!TIP]
 > You can use the `example.env` file as a template to create your own `.env` file.
 
-## Starting the application
+---
 
-### Local Setup
+## 4. Run the application locally
 
-Run the application using docker compose:
+### Start with Docker Compose
 
-```sh
-docker compose up -d
-```
+Run the application using Docker Compose:
 
-This command starts:
+docker compose up -dThis command starts:
 
 - The **AgentOS server**, running on [http://localhost:8000](http://localhost:8000).
 - The **PostgreSQL database** for storing agent sessions, knowledge, and memories, accessible on `localhost:5432`.
@@ -74,146 +81,118 @@ Once started, you can:
 
 When you're done, stop the application using:
 
-```sh
-docker compose down
-```
+docker compose down---
 
-### Cloud Setup
+## 5. Cloud deployment (Railway)
 
 To deploy the application to Railway, run the following commands:
 
-1. Login to Railway:
+1. **Login to Railway**:
 
-```sh
-railway login
-```
+railway login2. **Deploy the application**:
 
-2. Deploy the application:
-
-```sh
-./scripts/railway_up.sh
-```
-
-This command will:
+./scripts/railway_up.shThis command will:
 
 - Create a new Railway project.
 - Deploy a PgVector database service to your Railway project.
-- Build and deploy the docker image to your Railway project.
+- Build and deploy the Docker image to your Railway project.
 - Set environment variables in your AgentOS service.
 - Create a new domain for your AgentOS service.
 
-### Updating the application
+### Updating the application on Railway
 
-To update the application, run the following command:
+To update the application, run:
 
-```sh
-railway up --service agent_os -d
-```
+railway up --service agent_os -dThis rebuilds and redeploys the Docker image to your Railway service.
 
-This command will rebuild and redeploy the docker image to your Railway service.
+### Deleting the application from Railway
 
-### Deleting the application
+To delete the application, run:
 
-To delete the application, run the following command:
-
-```sh
 railway down --service agent_os
-railway down --service pgvector
-```
+railway down --service pgvector**Careful:** This deletes the AgentOS and PgVector database services from your Railway project.
 
-Careful: This command will delete the AgentOS and PgVector database services from your Railway project.
+### Connecting AgnoUI to a Railway AgentOS
 
-### Connecting the AgnoUI to the AgentOS server
-
-To connect the AgnoUI to the AgentOS server:
+To connect the AgnoUI to the AgentOS server running on Railway:
 
 - Open the [Agno UI](https://os.agno.com)
 - Create a new AgentOS by clicking on the `+` button in the top right corner.
-- Enter the AgentOS URL and click on the `Connect` button.
-- You can add a local endpoint from your dev setup. To add the railway endpoint, you will be provided with a coupon code during the workshop.
+- Enter the Railway AgentOS URL and click on the `Connect` button.
+- You can also add a local endpoint from your dev setup. To add the Railway endpoint, you may be provided with a coupon code during the workshop.
 
-## Prebuilt Agents, Teams and Workflows
+---
 
-The `/agents` folder contains pre-built agents that you can use as a starting point.
+## 6. Prebuilt Agents, Teams and Workflows
 
-- Web Search Agent: A simple agent that can search the web.
-- Agno Assist: An Agent that can help answer questions about Agno.
-  - Important: Make sure to load the `agno_assist` knowledge base before using this agent by running `docker exec -it mb-agent-os-agent-os-1 python -m agents.agno_knowledge_agent
-`. Running this script will add the Agno documentation to the knowledge base.
-- Finance Agent: An agent that uses the YFinance API to get stock prices and financial data.
-- Research Agent: An agent that can search the web for information.
-- Memory Manager: An agent that can manage the memory of the agents.
-- YouTube Agent: An agent that can search YouTube for videos and answer questions about them.
+This repo includes several ready-to-use building blocks so you can try things quickly.
 
-The `/teams` folder contains pre-built teams that you can use as a starting point.
+### Agents (`/agents`)
 
-- Finance Team: A team of agents that can work together to analyze financial data.
+- **Web Search Agent**: A simple agent that can search the web.
+- **Agno Assist**: An agent that can help answer questions about Agno.
+  - **Important:** Load the `agno_assist` knowledge base before using this agent by running:
 
-The `/workflows` folder contains pre-built workflows that you can use as a starting point.
+   
+    docker exec -it mb-agent-os-agent-os-1 python -m agents.agno_knowledge_agent
+        This script adds the Agno documentation to the knowledge base.
 
-- Research Workflow: A workflow that can research information from multiple sources simultaneously.
+- **Finance Agent**: Uses the YFinance API to get stock prices and financial data.
+- **Research Agent**: Searches the web for information.
+- **Memory Manager**: Manages the memory of the agents.
+- **YouTube Agent**: Searches YouTube for videos and answers questions about them.
 
-## Development Setup
+### Teams (`/teams`)
 
-To setup your local virtual environment:
+- **Finance Team**: A team of agents that work together to analyze financial data.
+
+### Workflows (`/workflows`)
+
+- **Research Workflow**: Researches information from multiple sources simultaneously.
+
+---
+
+## 7. Development Setup (for contributors)
+
+If you want to work on the codebase locally (beyond just running with Docker), set up a virtual environment.
 
 ### Install `uv`
 
-We use `uv` for python environment and package management. Install it by following the the [`uv` documentation](https://docs.astral.sh/uv/#getting-started) or use the command below for unix-like systems:
+We use `uv` for Python environment and package management. Install it by following the [`uv` documentation](https://docs.astral.sh/uv/#getting-started) or use the command below for Unix-like systems:
 
-```sh
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-### Create Virtual Environment & Install Dependencies
+curl -LsSf https://astral.sh/uv/install.sh | sh### Create Virtual Environment & Install Dependencies
 
 Run the `dev_setup.sh` script. This will create a virtual environment and install project dependencies:
 
-```sh
-./scripts/dev_setup.sh
-```
-
-### Activate Virtual Environment
+./scripts/dev_setup.sh### Activate Virtual Environment
 
 Activate the created virtual environment:
 
-```sh
-source .venv/bin/activate
-```
+source .venv/bin/activate(On Windows, the command might differ, e.g., `.venv\Scripts\activate`)
 
-(On Windows, the command might differ, e.g., `.venv\Scripts\activate`)
+---
 
-## Managing Python Dependencies
+## 8. Managing Python Dependencies
 
-If you need to add or update python dependencies:
+If you need to add or update Python dependencies:
 
-### Modify pyproject.toml
+### Modify `pyproject.toml`
 
 Add or update your desired Python package dependencies in the `[dependencies]` section of the `pyproject.toml` file.
 
-### Generate requirements.txt
+### Generate `requirements.txt`
 
 The `requirements.txt` file is used to build the application image. After modifying `pyproject.toml`, regenerate `requirements.txt` using:
 
-```sh
-./scripts/generate_requirements.sh
-```
+./scripts/generate_requirements.shTo upgrade all existing dependencies to their latest compatible versions, run:
 
-To upgrade all existing dependencies to their latest compatible versions, run:
-
-```sh
-./scripts/generate_requirements.sh upgrade
-```
-
-### Rebuild Docker Images
+./scripts/generate_requirements.sh upgrade### Rebuild Docker Images
 
 Rebuild your Docker images to include the updated dependencies:
 
-```sh
-docker compose up -d --build
-```
+docker compose up -d --build---
 
-## Community & Support
+## 9. Community & Support
 
 Need help, have a question, or want to connect with the community?
 
