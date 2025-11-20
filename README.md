@@ -19,7 +19,12 @@ If you just want to try this out locally:
 1. **Install Docker Desktop** and make sure it is running.
 2. **Clone this repo** and `cd` into it.
 3. **Set your API keys** (at least `ANTHROPIC_API_KEY`, and `OPENAI_API_KEY` if you want the knowledge agent).
-4. **Start everything** with `docker compose up -d`.
+4. **Start everything** with:
+
+   ```sh
+   docker compose up -d
+   ```
+
 5. **Open the docs** at `http://localhost:8000/docs`.
 6. **Connect Agno UI** to `http://localhost:8000` at [Agno UI](https://os.agno.com).
 
@@ -40,17 +45,29 @@ Make sure Docker Desktop is installed and running. Install Railway CLI only if y
 
 ## 2. Clone the repo
 
+```sh
 git clone https://github.com/agno-agi/ai-eng-os.git
-cd ai-eng-os---
+cd ai-eng-os
+```
+
+---
 
 ## 3. Configure API keys
 
 We'll use Sonnet 4.5 as the default model, so you must export the `ANTHROPIC_API_KEY` environment variable:
 
-export ANTHROPIC_API_KEY="YOUR_API_KEY_HERE"Optionally, export the `OPENAI_API_KEY` and `EXA_API_KEY` environment variables to use OpenAI and Exa services:
+```sh
+export ANTHROPIC_API_KEY="YOUR_API_KEY_HERE"
+```
 
+Optionally, export the `OPENAI_API_KEY` and `EXA_API_KEY` environment variables to use OpenAI and Exa services:
+
+```sh
 export OPENAI_API_KEY="YOUR_API_KEY_HERE"
-export EXA_API_KEY="YOUR_API_KEY_HERE"**Note:** OpenAI is used to create embeddings for the knowledge base. To use the Agno Knowledge Agent, you **must** set `OPENAI_API_KEY`.
+export EXA_API_KEY="YOUR_API_KEY_HERE"
+```
+
+**Note:** OpenAI is used to create embeddings for the knowledge base. To use the Agno Knowledge Agent, you **must** set `OPENAI_API_KEY`.
 
 > [!TIP]
 > You can use the `example.env` file as a template to create your own `.env` file.
@@ -63,7 +80,11 @@ export EXA_API_KEY="YOUR_API_KEY_HERE"**Note:** OpenAI is used to create embeddi
 
 Run the application using Docker Compose:
 
-docker compose up -dThis command starts:
+```sh
+docker compose up -d
+```
+
+This command starts:
 
 - The **AgentOS server**, running on [http://localhost:8000](http://localhost:8000).
 - The **PostgreSQL database** for storing agent sessions, knowledge, and memories, accessible on `localhost:5432`.
@@ -81,7 +102,11 @@ Once started, you can:
 
 When you're done, stop the application using:
 
-docker compose down---
+```sh
+docker compose down
+```
+
+---
 
 ## 5. Cloud deployment (Railway)
 
@@ -89,9 +114,17 @@ To deploy the application to Railway, run the following commands:
 
 1. **Login to Railway**:
 
-railway login2. **Deploy the application**:
+   ```sh
+   railway login
+   ```
 
-./scripts/railway_up.shThis command will:
+2. **Deploy the application**:
+
+   ```sh
+   ./scripts/railway_up.sh
+   ```
+
+This command will:
 
 - Create a new Railway project.
 - Deploy a PgVector database service to your Railway project.
@@ -103,14 +136,22 @@ railway login2. **Deploy the application**:
 
 To update the application, run:
 
-railway up --service agent_os -dThis rebuilds and redeploys the Docker image to your Railway service.
+```sh
+railway up --service agent_os -d
+```
+
+This rebuilds and redeploys the Docker image to your Railway service.
 
 ### Deleting the application from Railway
 
 To delete the application, run:
 
+```sh
 railway down --service agent_os
-railway down --service pgvector**Careful:** This deletes the AgentOS and PgVector database services from your Railway project.
+railway down --service pgvector
+```
+
+**Careful:** This deletes the AgentOS and PgVector database services from your Railway project.
 
 ### Connecting AgnoUI to a Railway AgentOS
 
@@ -133,9 +174,11 @@ This repo includes several ready-to-use building blocks so you can try things qu
 - **Agno Assist**: An agent that can help answer questions about Agno.
   - **Important:** Load the `agno_assist` knowledge base before using this agent by running:
 
-   
+    ```sh
     docker exec -it mb-agent-os-agent-os-1 python -m agents.agno_knowledge_agent
-        This script adds the Agno documentation to the knowledge base.
+    ```
+
+    This script adds the Agno documentation to the knowledge base.
 
 - **Finance Agent**: Uses the YFinance API to get stock prices and financial data.
 - **Research Agent**: Searches the web for information.
@@ -160,15 +203,27 @@ If you want to work on the codebase locally (beyond just running with Docker), s
 
 We use `uv` for Python environment and package management. Install it by following the [`uv` documentation](https://docs.astral.sh/uv/#getting-started) or use the command below for Unix-like systems:
 
-curl -LsSf https://astral.sh/uv/install.sh | sh### Create Virtual Environment & Install Dependencies
+```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### Create Virtual Environment & Install Dependencies
 
 Run the `dev_setup.sh` script. This will create a virtual environment and install project dependencies:
 
-./scripts/dev_setup.sh### Activate Virtual Environment
+```sh
+./scripts/dev_setup.sh
+```
+
+### Activate Virtual Environment
 
 Activate the created virtual environment:
 
-source .venv/bin/activate(On Windows, the command might differ, e.g., `.venv\Scripts\activate`)
+```sh
+source .venv/bin/activate
+```
+
+(On Windows, the command might differ, e.g., `.venv\Scripts\activate`)
 
 ---
 
@@ -184,13 +239,25 @@ Add or update your desired Python package dependencies in the `[dependencies]` s
 
 The `requirements.txt` file is used to build the application image. After modifying `pyproject.toml`, regenerate `requirements.txt` using:
 
-./scripts/generate_requirements.shTo upgrade all existing dependencies to their latest compatible versions, run:
+```sh
+./scripts/generate_requirements.sh
+```
 
-./scripts/generate_requirements.sh upgrade### Rebuild Docker Images
+To upgrade all existing dependencies to their latest compatible versions, run:
+
+```sh
+./scripts/generate_requirements.sh upgrade
+```
+
+### Rebuild Docker Images
 
 Rebuild your Docker images to include the updated dependencies:
 
-docker compose up -d --build---
+```sh
+docker compose up -d --build
+```
+
+---
 
 ## 9. Community & Support
 
@@ -200,3 +267,5 @@ Need help, have a question, or want to connect with the community?
 - 💬 **Chat with us on [Discord](https://agno.link/discord)** for live discussions.
 - ❓ **Ask a question on [Discourse](https://agno.link/community)** for community support.
 - 🐛 **[Report an Issue](https://github.com/agno-agi/agent-api/issues)** on GitHub if you find a bug or have a feature request.
+
+
