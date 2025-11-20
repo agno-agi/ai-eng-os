@@ -154,7 +154,7 @@ python -m agents.agno_knowledge_agent
 To connect the AgentOS UI to the AgentOS server:
 
 - Open the [AgentOS UI](https://os.agno.com)
-- Create a new AgentOS by clicking on the `+` button in the top right corner.
+- Create a new AgentOS by clicking on the `+` button in the top left corner.
 - Enter the AgentOS URL and click on the `Connect` button.
 - You can add a local endpoint from your dev setup. To add the railway endpoint, you will be provided with a coupon code during the workshop.
 
