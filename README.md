@@ -78,6 +78,16 @@ When you're done, stop the application using:
 docker compose down
 ```
 
+### Adding knowledge to Agno Knowledge Agent locally
+
+To add knowledge to the Agno Knowledge Agent, run the following command:
+
+```sh
+docker exec -it ai-eng-os-agent-os-1 python -m agents.agno_knowledge_agent
+```
+
+This command will add the Agno documentation to the knowledge base.
+
 ### Cloud Setup
 
 To deploy the application to Railway, run the following commands:
@@ -122,6 +132,22 @@ railway down --service pgvector
 ```
 
 Careful: This command will delete the AgentOS and PgVector database services from your Railway project.
+
+### Adding knowledge to Agno Knowledge Agent on Railway
+
+To add knowledge to the Agno Knowledge Agent, run the following command:
+
+```sh
+railway ssh --service agent_os
+```
+
+This command will open a ssh session to the AgentOS service.
+
+Once you are in the ssh session, you can run the following command to add knowledge to the Agno Knowledge Agent:
+
+```sh
+python -m agents.agno_knowledge_agent
+```
 
 ### Connecting the AgnoUI to the AgentOS server
 
