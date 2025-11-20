@@ -9,8 +9,8 @@ from agents.memory_manager import memory_manager
 from agents.research_agent import research_agent
 from agents.youtube_agent import youtube_agent
 from teams.finance_team import finance_team
-from workflows.research_workflow import research_workflow
 from workflows.business_profile import business_profile_workflow
+from workflows.research_workflow import research_workflow
 
 # ============================================================================
 # AgentOS Config

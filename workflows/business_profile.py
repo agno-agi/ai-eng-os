@@ -1,8 +1,6 @@
 from textwrap import dedent
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel
-
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.tools.duckduckgo import DuckDuckGoTools
@@ -10,13 +8,14 @@ from agno.tools.parallel import ParallelTools
 from agno.workflow import Step, Workflow
 from agno.workflow.parallel import Parallel
 from agno.workflow.step import StepInput, StepOutput
+from pydantic import BaseModel
 
 from db.demo_db import demo_db
-
 
 # ============================================================================
 # Create Schemas
 # ============================================================================
+
 
 class BusinessProfileInput(BaseModel):
     name: str
@@ -129,9 +128,7 @@ async def consolidate_business_profile_step_function(input: StepInput) -> StepOu
     # Get the list of step outputs from the parallel step
     parallel_step_output_list: Optional[List[StepOutput]] = parallel_step_output.steps if parallel_step_output else None
     # Create the business profile content by combining the content of the different step outputs
-    business_profile_content = (
-        f"Please use the following extracted search results create a comprehensive business profile for the business profile input: {str(input.input)}. \n\n"
-    )
+    business_profile_content = f"Please use the following extracted search results create a comprehensive business profile for the business profile input: {str(input.input)}. \n\n"
     if parallel_step_output_list and len(parallel_step_output_list) > 0:
         for step_output in parallel_step_output_list:
             business_profile_content += f"## {step_output.step_name} \n\n{step_output.content}\n\n"

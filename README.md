@@ -86,13 +86,21 @@ This command will add the Agno documentation to the knowledge base.
 
 To deploy the application to Railway, run the following commands:
 
-1. Login to Railway:
+1. Install Railway CLI:
+
+```sh
+brew install railway
+```
+
+More information on how to install Railway CLI can be found [here](https://docs.railway.com/guides/cli).
+
+2. Login to Railway:
 
 ```sh
 railway login
 ```
 
-2. Deploy the application:
+3. Deploy the application:
 
 ```sh
 ./scripts/railway_up.sh
