@@ -61,6 +61,8 @@ This repo includes several ready-to-use building blocks so you can try things qu
 
 - **Research Workflow**: Researches information from multiple sources simultaneously.
 
+---
+
 ## 1. Environments You Can Use
 
 This repository lets you run AgentOS in two environments:
@@ -70,7 +72,6 @@ This repository lets you run AgentOS in two environments:
 
 Make sure Docker Desktop is installed and running. Install Railway CLI only if you plan to deploy to the cloud.
 
----
 
 ## 2. Clone the repo
 
@@ -78,8 +79,6 @@ Make sure Docker Desktop is installed and running. Install Railway CLI only if y
 git clone https://github.com/agno-agi/ai-eng-os.git
 cd ai-eng-os
 ```
-
----
 
 ## 3. Configure API keys
 
@@ -101,7 +100,6 @@ export EXA_API_KEY="YOUR_API_KEY_HERE"
 > [!TIP]
 > You can use the `example.env` file as a template to create your own `.env` file.
 
----
 
 ## 4. Run the application locally
 
@@ -135,7 +133,6 @@ When you're done, stop the application using:
 docker compose down
 ```
 
----
 
 ## 5. Cloud deployment (Railway)
 
@@ -191,11 +188,6 @@ To connect the AgnoUI to the AgentOS server running on Railway:
 - Enter the Railway AgentOS URL and click on the `Connect` button.
 - You can also add a local endpoint from your dev setup. To add the Railway endpoint, you may be provided with a `coupon code` during the workshop.
 
----
-
-
-
----
 
 ## 6. Development Setup (for contributors)
 
@@ -227,7 +219,6 @@ source .venv/bin/activate
 
 (On Windows, the command might differ, e.g., `.venv\Scripts\activate`)
 
----
 
 ## 7. Managing Python Dependencies
 
@@ -258,8 +249,6 @@ Rebuild your Docker images to include the updated dependencies:
 ```sh
 docker compose up -d --build
 ```
-
----
 
 ## Community & Support
 
