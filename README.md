@@ -9,7 +9,6 @@ this repository includes:
 - A set of **pre-built Agents, Teams and Workflows** to use as a starting point.
 
 For more information, checkout [Agno](https://agno.link/gh) and give it a ⭐️
-
 ---
 
 ## QuickStart Guide
@@ -29,7 +28,6 @@ If you just want to try this out locally:
 6. **Connect AgentOS UI** to `http://localhost:8000` at [AgentOS UI](https://os.agno.com).
 
 Details for each step are below.
-
 ---
 
 
@@ -51,7 +49,6 @@ Make sure Docker Desktop is installed and running. Install Railway CLI only if y
 git clone https://github.com/agno-agi/ai-eng-os.git
 cd ai-eng-os
 ```
-
 ---
 
 ## 3.Prebuilt Agents, Teams and Workflows
@@ -82,7 +79,6 @@ This repo includes several ready-to-use building blocks so you can try things qu
 ### Workflows (`/workflows`)
 
 - **Research Workflow**: Researches information from multiple sources simultaneously.
-
 ---
 
 ## 4. Configure API keys
@@ -104,7 +100,6 @@ export EXA_API_KEY="YOUR_API_KEY_HERE"
 
 > [!TIP]
 > You can use the `example.env` file as a template to create your own `.env` file.
-
 ---
 
 ## 5. Run the application locally
@@ -138,7 +133,6 @@ When you're done, stop the application using:
 ```sh
 docker compose down
 ```
-
 ---
 
 ## 6. Cloud Setup
@@ -194,7 +188,6 @@ To connect the AgnoUI to the AgentOS server running on Railway:
 - Create a new AgentOS by clicking on the `+` button in the top left corner.
 - Enter the Railway AgentOS URL and click on the `Connect` button.
 - You can also add a local endpoint from your dev setup. To add the Railway endpoint, you may be provided with a `coupon code` during the workshop.
-
 ---
 
 ## 7. Development Setup (for contributors)
@@ -226,7 +219,6 @@ source .venv/bin/activate
 ```
 
 (On Windows, the command might differ, e.g., `.venv\Scripts\activate`)
-
 ---
 
 ## 8. Managing Python Dependencies
@@ -258,7 +250,6 @@ Rebuild your Docker images to include the updated dependencies:
 ```sh
 docker compose up -d --build
 ```
-
 ---
 
 ## Community & Support
