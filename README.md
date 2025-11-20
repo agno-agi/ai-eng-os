@@ -175,7 +175,7 @@ This repo includes several ready-to-use building blocks so you can try things qu
   - **Important:** Load the `agno_assist` knowledge base before using this agent by running:
 
     ```sh
-    docker exec -it mb-agent-os-agent-os-1 python -m agents.agno_knowledge_agent
+    docker exec -it ai-eng-os-agent-os-1 python -m agents.agno_knowledge_agent
     ```
 
     This script adds the Agno documentation to the knowledge base.
