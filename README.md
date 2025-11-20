@@ -1,8 +1,8 @@
 # AgentOS
 
-Welcome to your AgentOS: a robust, production-ready application for serving agents, multi-agent teams, and agentic workflows.
+Welcome to AgentOS: a robust, production-ready application for serving agents, multi-agent teams, and agentic workflows.
 
-It includes:
+this repository includes:
 
 - An **AgentOS server** for serving agents, multi-agent teams and agentic workflows.
 - A **PostgreSQL database** for storing agent sessions, knowledge, and memories.
@@ -31,6 +31,35 @@ If you just want to try this out locally:
 Details for each step are below.
 
 ---
+
+## Prebuilt Agents, Teams and Workflows
+
+This repo includes several ready-to-use building blocks so you can try things quickly.
+
+### Agents (`/agents`)
+
+- **Web Search Agent**: A simple agent that can search the web.
+- **Agno Assist**: An agent that can help answer questions about Agno.
+  - **Important:** Load the `agno_assist` knowledge base before using this agent by running:
+
+    ```sh
+    docker exec -it ai-eng-os-agent-os-1 python -m agents.agno_knowledge_agent
+    ```
+
+    This script adds the Agno documentation to the knowledge base.
+
+- **Finance Agent**: Uses the YFinance API to get stock prices and financial data.
+- **Research Agent**: Searches the web for information.
+- **Memory Manager**: Manages the memory of the agents.
+- **YouTube Agent**: Searches YouTube for videos and answers questions about them.
+
+### Teams (`/teams`)
+
+- **Finance Team**: A team of agents that work together to analyze financial data.
+
+### Workflows (`/workflows`)
+
+- **Research Workflow**: Researches information from multiple sources simultaneously.
 
 ## 1. Environments You Can Use
 
@@ -158,44 +187,17 @@ railway down --service pgvector
 To connect the AgnoUI to the AgentOS server running on Railway:
 
 - Open the [Agno UI](https://os.agno.com)
-- Create a new AgentOS by clicking on the `+` button in the top right corner.
+- Create a new AgentOS by clicking on the `+` button in the top left corner.
 - Enter the Railway AgentOS URL and click on the `Connect` button.
-- You can also add a local endpoint from your dev setup. To add the Railway endpoint, you may be provided with a coupon code during the workshop.
+- You can also add a local endpoint from your dev setup. To add the Railway endpoint, you may be provided with a `coupon code` during the workshop.
 
 ---
 
-## 6. Prebuilt Agents, Teams and Workflows
 
-This repo includes several ready-to-use building blocks so you can try things quickly.
-
-### Agents (`/agents`)
-
-- **Web Search Agent**: A simple agent that can search the web.
-- **Agno Assist**: An agent that can help answer questions about Agno.
-  - **Important:** Load the `agno_assist` knowledge base before using this agent by running:
-
-    ```sh
-    docker exec -it ai-eng-os-agent-os-1 python -m agents.agno_knowledge_agent
-    ```
-
-    This script adds the Agno documentation to the knowledge base.
-
-- **Finance Agent**: Uses the YFinance API to get stock prices and financial data.
-- **Research Agent**: Searches the web for information.
-- **Memory Manager**: Manages the memory of the agents.
-- **YouTube Agent**: Searches YouTube for videos and answers questions about them.
-
-### Teams (`/teams`)
-
-- **Finance Team**: A team of agents that work together to analyze financial data.
-
-### Workflows (`/workflows`)
-
-- **Research Workflow**: Researches information from multiple sources simultaneously.
 
 ---
 
-## 7. Development Setup (for contributors)
+## 6. Development Setup (for contributors)
 
 If you want to work on the codebase locally (beyond just running with Docker), set up a virtual environment.
 
@@ -227,7 +229,7 @@ source .venv/bin/activate
 
 ---
 
-## 8. Managing Python Dependencies
+## 7. Managing Python Dependencies
 
 If you need to add or update Python dependencies:
 
@@ -259,7 +261,7 @@ docker compose up -d --build
 
 ---
 
-## 9. Community & Support
+## Community & Support
 
 Need help, have a question, or want to connect with the community?
 
