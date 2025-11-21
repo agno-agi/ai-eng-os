@@ -9,6 +9,14 @@ set -e  # Exit on any error
 
 echo -e "🚂 Starting Railway deployment...\n"
 
+# Load .env file if it exists
+if [ -f .env ]; then
+    echo -e "📄 .env file found...\n"
+    set -a #run export command for all variables in .env file
+    source .env
+    set +a
+fi
+
 # Initialize a new project on Railway (uncomment if needed)
 railway init -n "agno"
 

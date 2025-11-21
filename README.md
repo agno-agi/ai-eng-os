@@ -37,7 +37,7 @@ export PARALLEL_API_KEY="YOUR_API_KEY_HERE"
 ```
 
 > [!TIP]
-> You can use the `example.env` file as a template to create your own `.env` file. But you will still need to export the API keys.
+> You can use the `example.env` file as a template to create your own `.env` file.
 
 ## Starting the application
 
