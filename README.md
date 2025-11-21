@@ -205,7 +205,9 @@ The `/teams` folder contains pre-built teams that you can use as a starting poin
 
 The `/workflows` folder contains pre-built workflows that you can use as a starting point.
 
-- **Research Workflow**: Researches information from multiple sources simultaneously.
+- **Research Workflow**: Researches information from multiple sources simultaneously regarding a given topic and synthesizes the information into a report.
+- **Business Profile Workflow**: Creates a business profile from a given business name, website and description.
+- **Invoice Processing Workflow**: Processes invoices from a given PDF URL and extracts the data in a structured format.
 
 ## Development Setup
 

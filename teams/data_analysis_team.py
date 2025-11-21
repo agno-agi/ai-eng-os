@@ -5,8 +5,8 @@ from textwrap import dedent
 from agno.agent import Agent
 from agno.knowledge.embedder.openai import OpenAIEmbedder
 from agno.knowledge.knowledge import Knowledge
-from agno.models.openai import OpenAIChat
 from agno.models.anthropic import Claude
+from agno.models.openai import OpenAIChat
 from agno.team.team import Team
 from agno.tools.reasoning import ReasoningTools
 from agno.tools.sql import SQLTools

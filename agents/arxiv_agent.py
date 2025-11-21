@@ -4,8 +4,6 @@ from agno.agent import Agent
 from agno.knowledge.embedder.openai import OpenAIEmbedder
 from agno.knowledge.knowledge import Knowledge
 from agno.models.anthropic import Claude
-
-from agno.os import AgentOS
 from agno.tools.arxiv import ArxivTools
 from agno.vectordb.pgvector import PgVector, SearchType
 

@@ -6,7 +6,6 @@ from typing import Any, Dict, List, Optional, cast
 from urllib.parse import urlparse
 
 import httpx
-
 from agno.agent import Agent
 from agno.media import File
 from agno.models.openai import OpenAIChat
@@ -16,6 +15,7 @@ from agno.workflow.types import StepInput, StepOutput
 from pydantic import BaseModel, Field
 
 from db.demo_db import demo_db
+
 
 # ============================================================================
 # Input/Output Schemas
