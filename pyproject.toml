@@ -46,7 +46,7 @@ plugins = ["pydantic.mypy"]
 exclude = [".venv*"]
 
 [[tool.mypy.overrides]]
-module = ["pgvector.*", "setuptools.*", "nest_asyncio.*", "agno.*"]
+module = ["pgvector.*", "setuptools.*", "nest_asyncio.*", "agno.*", "pandas", "requests"]
 ignore_missing_imports = true
 
 [tool.uv.pip]

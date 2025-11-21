@@ -2,7 +2,7 @@ from io import StringIO
 
 import pandas as pd
 import requests
-from agno.utils.log import log_info, log_error
+from agno.utils.log import log_error, log_info
 from sqlalchemy import create_engine
 
 from db.url import get_db_url
@@ -37,7 +37,6 @@ def load_f1_data():
             csv_data = StringIO(response.text)
             df = pd.read_csv(csv_data)
 
-
             # Load into PostgreSQL (replace if exists)
             df.to_sql(table_name, engine, if_exists="replace", index=False)
 
@@ -47,7 +46,7 @@ def load_f1_data():
             log_error(f"Failed to load {table_name}: {e}")
             raise
 
-    logger.info("F1 data load complete! 🏁")
+    log_info("F1 data load complete! 🏁")
 
 
 if __name__ == "__main__":
