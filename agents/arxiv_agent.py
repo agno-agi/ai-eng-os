@@ -83,7 +83,10 @@ arxiv_agent = Agent(
     model=Claude(id="claude-sonnet-4-5"),
     # model=OpenAIChat(id="gpt-5-mini"),
     db=demo_db,
-    tools=[ArxivTools(), KnowledgeTools(knowledge=knowledge, enable_list_content=True, enable_add_pdf_url_content=True)],
+    tools=[
+        ArxivTools(),
+        KnowledgeTools(knowledge=knowledge, enable_list_content=True, enable_add_pdf_url_content=True),
+    ],
     knowledge=knowledge,
     description=description,
     instructions=instructions,

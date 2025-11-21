@@ -209,7 +209,7 @@ class KnowledgeTools(Toolkit):
             )
 
         return "Successfully added content to the knowledge base"
-    
+
     def add_pdf_url_content(
         self,
         name: Optional[str] = None,
