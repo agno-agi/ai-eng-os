@@ -4,6 +4,7 @@ from agno.os import AgentOS
 
 from agents.agno_knowledge_agent import agno_knowledge_agent
 from agents.agno_mcp_agent import agno_mcp_agent
+from agents.arxiv_agent import arxiv_agent
 from agents.finance_agent import finance_agent
 from agents.memory_manager import memory_manager
 from agents.research_agent import research_agent
@@ -25,6 +26,7 @@ agent_os = AgentOS(
     agents=[
         agno_mcp_agent,
         agno_knowledge_agent,
+        arxiv_agent,
         finance_agent,
         research_agent,
         memory_manager,
