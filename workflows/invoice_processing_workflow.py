@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional, cast
 from urllib.parse import urlparse
 
 import httpx
+
 from agno.agent import Agent
 from agno.media import File
 from agno.models.openai import OpenAIChat
@@ -19,8 +20,6 @@ from db.demo_db import demo_db
 # ============================================================================
 # Input/Output Schemas
 # ============================================================================
-
-
 class LineItem(BaseModel):
     """Individual line item in an invoice"""
 
@@ -56,8 +55,6 @@ class InvoiceRequest(BaseModel):
 # ============================================================================
 # Create Invoice Processing Agents
 # ============================================================================
-
-
 def create_extraction_agent(model_id: str = "gpt-4.1") -> Agent:
     """Create an extraction agent with the specified model"""
     return Agent(
@@ -122,8 +119,6 @@ def create_validation_agent(model_id: str = "gpt-4.1") -> Agent:
 # ============================================================================
 # Workflow Step Functions
 # ============================================================================
-
-
 def download_pdf_file(step_input: StepInput) -> StepOutput:
     """Download PDF from any public URL and return base64-encoded content."""
     request = cast(InvoiceRequest, step_input.input)

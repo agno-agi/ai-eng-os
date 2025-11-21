@@ -5,6 +5,7 @@ annotated-doc==0.0.4
 annotated-types==0.7.0
 anthropic==0.74.1
 anyio==4.11.0
+arxiv==2.3.1
 attrs==25.4.0
 beautifulsoup4==4.14.2
 brotli==1.2.0
@@ -27,6 +28,9 @@ fastapi-cli==0.0.16
 fastapi-cloud-cli==0.5.1
 fastar==0.6.0
 frozendict==2.4.7
+fastapi-cloud-cli==0.3.1
+feedparser==6.0.12
+frozendict==2.4.6
 gitdb==4.0.12
 gitpython==3.1.45
 h11==0.16.0
@@ -66,6 +70,7 @@ pydantic-core==2.41.5
 pydantic-settings==2.12.0
 pygments==2.19.2
 pyjwt==2.10.1
+pypdf==6.3.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.1
 python-multipart==0.0.20
@@ -78,6 +83,7 @@ rich-toolkit==0.16.0
 rignore==0.7.6
 rpds-py==0.29.0
 sentry-sdk==2.45.0
+sgmllib3k==1.0.0
 shellingham==1.5.4
 six==1.17.0
 smmap==5.0.2

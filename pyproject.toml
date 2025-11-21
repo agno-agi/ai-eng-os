@@ -8,6 +8,7 @@ authors = [{ name = "Agno", email = "hello@agno.com" }]
 dependencies = [
   "agno==2.2.13",
   "anthropic",
+  "arxiv",
   "ddgs",
   "exa_py",
   "fastapi[standard]",
@@ -16,6 +17,7 @@ dependencies = [
   "pandas",
   "pgvector",
   "psycopg[binary]",
+  "pypdf",
   "sqlalchemy",
   "yfinance",
   "youtube-transcript-api",
