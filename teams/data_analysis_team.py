@@ -1,13 +1,66 @@
+import json
+from pathlib import Path
 from textwrap import dedent
 
 from agno.agent import Agent
+from agno.knowledge.embedder.openai import OpenAIEmbedder
+from agno.knowledge.knowledge import Knowledge
 from agno.models.openai import OpenAIChat
 from agno.team.team import Team
 from agno.tools.reasoning import ReasoningTools
 from agno.tools.sql import SQLTools
+from agno.vectordb.pgvector import PgVector, SearchType
 
 from db.demo_db import demo_db
 from db.url import get_db_url
+
+# ============================================================================
+# Setup F1 Knowledge Base
+# ============================================================================
+data_dir = Path(__file__).parent.parent.joinpath("data")
+
+f1_knowledge = Knowledge(
+    name="F1 Racing Data",
+    vector_db=PgVector(
+        db_url=get_db_url(),
+        table_name="f1_metadata",
+        search_type=SearchType.hybrid,
+        embedder=OpenAIEmbedder(id="text-embedding-3-small"),
+    ),
+    contents_db=demo_db,
+)
+
+# Semantic model describing F1 tables
+semantic_model = {
+    "tables": [
+        {
+            "table_name": "constructors_championship",
+            "table_description": "Constructor's championship standings from 1958-2020, capturing team performance.",
+            "use_case": "Use for constructor/team championship data and performance analysis over years.",
+        },
+        {
+            "table_name": "drivers_championship",
+            "table_description": "Driver's championship standings from 1950-2020, detailing positions, teams, and points.",
+            "use_case": "Use for driver championship data and detailed performance analysis.",
+        },
+        {
+            "table_name": "fastest_laps",
+            "table_description": "Fastest laps recorded in races from 1950-2020, including driver and team details.",
+            "use_case": "Use for fastest lap data, including driver, team, and lap time information.",
+        },
+        {
+            "table_name": "race_results",
+            "table_description": "Race data for each F1 race from 1950-2020, including positions, drivers, teams, points.",
+            "use_case": "Use for detailed race results, driver standings, teams, and performance data.",
+        },
+        {
+            "table_name": "race_wins",
+            "table_description": "Race win data from 1950-2020, detailing venue, winner, team, and race duration.",
+            "use_case": "Use for race winner data, their teams, and race conditions analysis.",
+        },
+    ]
+}
+semantic_model_str = json.dumps(semantic_model, indent=2)
 
 # ============================================================================
 # Create SQL Analysis Agents
@@ -17,51 +70,82 @@ sql_query_agent = Agent(
     name="SQL Query Agent",
     role="Database query specialist - translate natural language to SQL",
     model=OpenAIChat(id="gpt-5-mini"),
+    knowledge=f1_knowledge,
+    search_knowledge=True,
     tools=[SQLTools(db_url=get_db_url())],
     description=dedent("""\
         You are the SQL Query Agent — a database specialist who translates natural language
         questions into SQL queries, executes them safely, and retrieves data from PostgreSQL databases.
         """),
     instructions=dedent("""\
-        You are a SQL database expert specializing in PostgreSQL. Your role is to:
+       1) Identify Tables (use semantic_model)
+          - Check semantic_model for relevant tables.
+          - Use search_knowledge_base(table_name) for metadata and sample queries.
+          - Follow table rules if provided.
+
+       2) Query Construction
+          - Think through query logic; use chain of thought.
+          - Write syntactically correct PostgreSQL.
+          - Add LIMIT unless user asks for all results.
+          - Account for duplicates and null values.
+
+       3) Execute & Analyze
+          - Run query using run_sql_query (no semicolon).
+          - Analyze results for correctness and completeness.
+          - Show SQL used; explain findings.
+
+       4) Rules
+          - Always use search_knowledge_base before querying.
+          - Never delete data or abuse system.
+       """),
+    additional_context=dedent("""\
+        The semantic_model contains information about F1 tables and their usage.
+        <semantic_model>
+        """)
+    + semantic_model_str
+    + dedent("""
+        </semantic_model>
         
-        **1. Understand Data Needs**
-        - Parse natural language questions about data
-        - Identify what tables and columns are needed
-        - Clarify ambiguous requests if necessary
+        <sample_queries>
+        Here are sample query patterns for reference:
         
-        **2. Schema Exploration**
-        - Use SQL tools to list available tables when needed
-        - Inspect table schemas and column types
-        - Understand relationships between tables
+        -- Most race wins by a driver
+        SELECT name, COUNT(*) AS win_count
+        FROM race_wins
+        GROUP BY name
+        ORDER BY win_count DESC
+        LIMIT 10;
         
-        **3. Query Generation & Execution**
-        - Write clear, efficient PostgreSQL queries
-        - Use appropriate JOINs, WHERE clauses, and aggregations
-        - Add LIMIT clauses for large result sets
-        - Execute only SELECT queries (read-only)
-        - Format query results as clear tables
+        -- Championship winners with their race wins per year
+        SELECT dc.year, dc.name AS champion_name, COUNT(rw.name) AS race_wins
+        FROM drivers_championship dc
+        JOIN race_wins rw ON dc.name = rw.name 
+          AND dc.year = EXTRACT(YEAR FROM TO_DATE(rw.date, 'DD Mon YYYY'))
+        WHERE dc.position = '1'
+        GROUP BY dc.year, dc.name
+        ORDER BY dc.year;
         
-        **4. Query Best Practices**
-        - Use table aliases for clarity
-        - Add comments to explain complex queries
-        - Use proper date/time filtering
-        - Group and aggregate data thoughtfully
-        - Avoid queries without WHERE clauses on large tables
+        -- Constructor performance with wins in a year
+        WITH race_wins_2019 AS (
+            SELECT team, COUNT(*) AS wins
+            FROM race_wins
+            WHERE EXTRACT(YEAR FROM TO_DATE(date, 'DD Mon YYYY')) = 2019
+            GROUP BY team
+        )
+        SELECT cp.team, cp.position, COALESCE(rw.wins, 0) AS wins
+        FROM constructors_championship cp
+        LEFT JOIN race_wins_2019 rw ON cp.team = rw.team
+        WHERE cp.year = 2019
+        ORDER BY cp.position;
         
-        **5. Safety Guidelines**
-        - Only execute SELECT statements
-        - Do not execute DROP, DELETE, UPDATE, or ALTER
-        - Warn if a query might return very large results
-        - Validate queries before execution
-        
-        **Common Query Patterns:**
-        - Schema: "SHOW TABLES", "DESCRIBE table_name"
-        - Time-based: "WHERE created_at >= NOW() - INTERVAL '7 days'"
-        - Aggregation: "GROUP BY", "COUNT", "AVG", "SUM"
-        - Top N: "ORDER BY ... LIMIT N"
-        
-        Present query results in markdown tables for readability.
+        -- Most Constructor Championships
+        SELECT team, COUNT(*) AS championship_wins
+        FROM constructors_championship
+        WHERE position = 1
+        GROUP BY team
+        ORDER BY championship_wins DESC
+        LIMIT 5;
+        </sample_queries>
         """),
     add_history_to_context=True,
     add_datetime_to_context=True,
@@ -79,45 +163,23 @@ data_analyst_agent = Agent(
         identifies patterns and trends, and extracts actionable business insights.
         """),
     instructions=dedent("""\
-        You are a data analyst who interprets database query results. Your role is to:
-        
-        **1. Data Examination**
-        - Review query results carefully
-        - Understand the data structure and values
-        - Identify data quality issues if present
-        
-        **2. Statistical Analysis**
-        - Calculate key statistics (mean, median, distributions)
-        - Identify outliers and anomalies
-        - Compute growth rates and trends
-        - Analyze correlations and relationships
-        
-        **3. Pattern Recognition**
-        - Identify temporal trends (daily, weekly, seasonal)
-        - Spot usage patterns and behaviors
-        - Recognize clustering and segmentation
-        - Detect unusual patterns or changes
-        
-        **4. Insight Generation**
-        - Extract 3-5 key insights from the data
-        - Explain what the numbers mean in business terms
-        - Identify opportunities and risks
-        - Highlight actionable findings
-        
-        **5. Use Reasoning Tools**
-        - Think through complex data relationships
-        - Evaluate multiple interpretations
-        - Consider context and business implications
-        - Validate assumptions with logic
-        
-        **Analysis Framework:**
-        - What does the data show? (descriptive)
-        - Why is it happening? (diagnostic)  
-        - What might happen next? (predictive)
-        - What should be done? (prescriptive)
-        
-        Focus on insights that drive decisions, not just data summaries.
-        """),
+       1) Data Examination
+          - Review query results for structure, values, and quality issues.
+          - Calculate key statistics (mean, median, distributions).
+          - Identify outliers, anomalies, and trends.
+
+       2) Pattern Recognition
+          - Spot temporal trends (daily, weekly, seasonal).
+          - Detect usage patterns, clustering, and unusual changes.
+          - Use reasoning tools for complex relationships.
+
+       3) Insight Generation
+          - Extract 3-5 key insights in business terms.
+          - Explain what data shows (descriptive) and why (diagnostic).
+          - Identify opportunities and risks; highlight actions.
+
+       4) Framework: What shows? Why? What next? What to do?
+       """),
     add_history_to_context=True,
     add_datetime_to_context=True,
     markdown=True,
@@ -133,44 +195,22 @@ report_generator_agent = Agent(
         data analysis into clear, business-friendly reports that executives can act on.
         """),
     instructions=dedent("""\
-        You create executive-ready data reports. Your role is to:
-        
-        **1. Report Structure**
-        - **Executive Summary**: Key findings in 2-3 sentences
-        - **Key Metrics**: Highlight important numbers with context
-        - **Data Analysis**: Present insights with explanations
-        - **Visualizations**: Describe charts/tables that would be helpful
-        - **Recommendations**: Actionable next steps based on data
-        
-        **2. Presentation Guidelines**
-        - Use clear, non-technical language
-        - Explain what numbers mean in business terms
-        - Use bullet points for readability
-        - Format numbers appropriately (K, M, B for large numbers)
-        - Include tables for comparative data
-        
-        **3. Storytelling with Data**
-        - Start with the most important insight
-        - Build a logical narrative from the data
-        - Connect findings to business impact
-        - Provide context and comparisons
-        
-        **4. Actionable Recommendations**
-        - Suggest specific actions based on data
-        - Prioritize recommendations by impact
-        - Highlight urgent items vs long-term improvements
-        - Note areas needing further investigation
-        
-        **5. Format Examples**
-        
-        Good: "Agent usage increased 45% this month, with Finance Agent accounting 
-        for 60% of queries. This suggests growing demand for financial analysis tools."
-        
-        Bad: "SELECT COUNT(*) returned 1,234 rows."
-        
-        Make reports scannable, insightful, and action-oriented.
-        Your audience is busy executives who need to understand data quickly.
-        """),
+       1) Report Structure
+          - Executive Summary: Key findings in 2-3 sentences.
+          - Key Metrics: Important numbers with context.
+          - Insights: What data means for business.
+          - Recommendations: Actionable next steps.
+
+       2) Presentation
+          - Use clear, non-technical language; format numbers (K, M, B).
+          - Include tables for comparative data; use bullets.
+          - Start with most important insight; build logical narrative.
+
+       3) Quality
+          - Connect findings to business impact.
+          - Prioritize recommendations by urgency.
+          - Make it scannable and action-oriented for executives.
+       """),
     add_history_to_context=True,
     add_datetime_to_context=True,
     markdown=True,
@@ -190,69 +230,25 @@ description = dedent("""\
     """)
 
 instructions = dedent("""\
-    You coordinate an SQL Analysis Team to answer data questions through a systematic workflow.
-    
-    **Team Members:**
-    1. **SQL Query Agent**: Executes database queries and retrieves data
-    2. **Data Analyst Agent**: Analyzes results and extracts insights  
-    3. **Report Generator Agent**: Presents findings in business-friendly format
-    
-    **Workflow:**
-    
-    1. **Understand the Question**
-       - Parse what data the user needs
-       - Identify which tables/metrics are relevant
-       - Clarify ambiguous requests if needed
-    
-    2. **Data Retrieval (SQL Query Agent)**
-       - Explore schema if needed
-       - Write and execute appropriate SQL queries
-       - Retrieve relevant data efficiently
-       - Handle errors and edge cases
-    
-    3. **Data Analysis (Data Analyst Agent)**
-       - Examine query results for patterns
-       - Calculate key statistics and metrics
-       - Identify trends and anomalies
-       - Extract actionable insights
-    
-    4. **Report Generation (Report Generator Agent)**
-       - Create executive summary
-       - Present findings clearly
-       - Provide business context
-       - Recommend actions
-    
-    5. **Synthesis (Team Leader - You)**
-       - Integrate all outputs into coherent response
-       - Ensure consistency across sections
-       - Add final context and recommendations
-       - Return only the final consolidated report
-    
-    **Coordination Guidelines:**
-    
-    - **Sequential Flow**: Query → Analysis → Reporting
-    - **Clear Delegation**: Tell each agent exactly what you need
-    - **Avoid Duplication**: Don't repeat work across agents
-    - **Synthesize Actively**: Integrate outputs, don't just concatenate
-    - **Add Value**: Your synthesis should provide additional context
-    
-    **Quality Standards:**
-    
-    - Ensure data accuracy and timeliness
-    - Provide context for all numbers
-    - Make insights actionable
-    - Use clear, professional language
-    - Format for executive readability
-    
-    **Output Format:**
-    
-    Return only the final consolidated report with:
-    - Executive summary
-    - Key findings with supporting data
-    - Analysis and insights
-    - Recommendations
-    
-    Do not include intermediate agent outputs or internal coordination notes.
+    1) Planning & Routing
+       - Parse user's data question; identify tables/metrics needed.
+       - Route queries to SQL Query Agent (SQLTools).
+       - Route analysis to Data Analyst Agent (ReasoningTools).
+       - Route reporting to Report Generator Agent.
+       - Sequential flow: Query → Analysis → Reporting.
+
+    2) Coordination
+       - Delegate clearly to each specialist; avoid duplication.
+       - Synthesize outputs into coherent response (don't concatenate).
+
+    3) Quality Standards
+       - Ensure data accuracy with timestamps.
+       - Provide context for all numbers; use tables.
+       - Make insights actionable and executive-friendly.
+
+    4) Output
+       - Return only final consolidated report (no intermediate outputs).
+       - Include: summary, findings, insights, recommendations.
     """)
 
 
@@ -261,7 +257,7 @@ instructions = dedent("""\
 # ============================================================================
 data_analysis_team = Team(
     name="SQL Analysis Team",
-    model=OpenAIChat(id="gpt-5"),
+    model=OpenAIChat(id="gpt-5-mini"),
     members=[sql_query_agent, data_analyst_agent, report_generator_agent],
     tools=[ReasoningTools(add_instructions=True)],
     description=description,
@@ -270,4 +266,12 @@ data_analysis_team = Team(
     add_history_to_context=True,
     add_datetime_to_context=True,
     markdown=True,
+    debug_mode=True,
 )
+
+# ============================================================================
+# Load F1 Knowledge
+# ============================================================================
+if __name__ == "__main__":
+    files = [str(f) for f in data_dir.glob("*.json")]
+    f1_knowledge.add_contents(paths=files)

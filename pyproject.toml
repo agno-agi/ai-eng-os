@@ -13,6 +13,7 @@ dependencies = [
   "fastapi[standard]",
   "mcp",
   "openai",
+  "pandas",
   "pgvector",
   "psycopg[binary]",
   "sqlalchemy",

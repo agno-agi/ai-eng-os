@@ -40,6 +40,11 @@ chat:
       - "I live in New York City"
       - "I like to hike and swim on the weekends"
 
+    sql-analysis-team:
+      - "Who has won the most F1 championships?"
+      - "Show me the top 5 constructors by total race wins"
+      - "Compare Lewis Hamilton's and Michael Schumacher's championship years"
+
     content-creation-workflow:
       - "Research and write an article about the latest trends in AI development"
       - "Create content about the future of quantum computing"
