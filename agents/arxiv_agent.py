@@ -5,7 +5,6 @@ from agno.knowledge.embedder.openai import OpenAIEmbedder
 from agno.knowledge.knowledge import Knowledge
 from agno.models.anthropic import Claude
 
-# from agno.models.openai import OpenAIChat
 from agno.os import AgentOS
 from agno.tools.arxiv import ArxivTools
 from agno.vectordb.pgvector import PgVector, SearchType
@@ -17,7 +16,6 @@ from tools.knowledge_tools import KnowledgeTools
 # ============================================================================
 # Setup knowledge base for storing Agno documentation
 # ============================================================================
-
 
 knowledge = Knowledge(
     name="Agno Documentation",
@@ -33,12 +31,12 @@ knowledge = Knowledge(
 # ============================================================================
 # Description & Instructions
 # ============================================================================
+
 description = dedent(
     """\
     You are an ArXiv research assistant with full search capabilities.You are built using Agno - The best way to build AI Agents.
     """
 )
-
 
 instructions = dedent(
     """\
@@ -77,11 +75,11 @@ instructions = dedent(
 # ============================================================================
 # Create the Agent
 # ============================================================================
+
 arxiv_agent = Agent(
     name="ArXiv Research Assistant",
     id="arxiv-agent",
     model=Claude(id="claude-sonnet-4-5"),
-    # model=OpenAIChat(id="gpt-5-mini"),
     db=demo_db,
     tools=[
         ArxivTools(),
@@ -97,12 +95,3 @@ arxiv_agent = Agent(
     markdown=True,
     enable_agentic_knowledge_filters=True,
 )
-
-
-# ************* Create AgentOS *************
-agent_os = AgentOS(agents=[arxiv_agent])
-app = agent_os.get_app()
-
-# ************* Run AgentOS *************
-if __name__ == "__main__":
-    agent_os.serve(app="arxiv_agent:app", reload=True)

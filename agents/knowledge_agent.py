@@ -13,6 +13,7 @@ from tools.knowledge_tools import KnowledgeTools
 # ============================================================================
 # Setup knowledge base for storing Agno documentation
 # ============================================================================
+
 knowledge = Knowledge(
     name="Agno Knowledge",
     vector_db=PgVector(
@@ -27,6 +28,7 @@ knowledge = Knowledge(
 # ============================================================================
 # Description & Instructions
 # ============================================================================
+
 description = dedent(
     """\
     You are a general knowledge agent with full search capabilities. You are built using Agno - The best way to build AI Agents.
@@ -62,6 +64,7 @@ instructions = dedent(
 # ============================================================================
 # Create the Agent
 # ============================================================================
+
 general_knowledge_agent = Agent(
     name="General Knowledge Agent",
     id="general-knowledge-agent",
