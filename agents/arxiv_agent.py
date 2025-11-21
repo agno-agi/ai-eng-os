@@ -5,7 +5,6 @@ from agno.knowledge.embedder.openai import OpenAIEmbedder
 from agno.knowledge.knowledge import Knowledge
 from agno.models.anthropic import Claude
 from agno.vectordb.pgvector import PgVector, SearchType
-from agno.db.postgres import PostgresDb
 from db.demo_db import demo_db
 from db.url import get_db_url
 from agno.tools.arxiv import ArxivTools
@@ -16,7 +15,6 @@ from agno.os import AgentOS
 # Setup knowledge base for storing Agno documentation
 # ============================================================================
 
-content_db = PostgresDb(id="arxiv-content", db_url=get_db_url())
 
 knowledge = Knowledge(
     name="Agno Documentation",
@@ -26,7 +24,7 @@ knowledge = Knowledge(
         search_type=SearchType.hybrid,
         embedder=OpenAIEmbedder(id="text-embedding-3-small"),
     ),
-    contents_db=content_db,
+    contents_db=demo_db,
 )
 
 # ============================================================================
