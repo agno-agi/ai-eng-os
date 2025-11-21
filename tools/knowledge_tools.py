@@ -4,9 +4,10 @@ from typing import Any, Dict, List, Optional
 
 from agno.knowledge.document import Document
 from agno.knowledge.knowledge import Knowledge
+from agno.knowledge.reader.pdf_reader import PDFReader
 from agno.tools import Toolkit
 from agno.utils.log import log_debug, log_error
-from agno.knowledge.reader.pdf_reader import PDFReader
+
 
 class KnowledgeTools(Toolkit):
     def __init__(
@@ -33,7 +34,6 @@ class KnowledgeTools(Toolkit):
         self.enable_analyze = enable_analyze or all
         self.enable_list_content = enable_list_content or all
         self.enable_add_url_content = enable_add_url_content or all
-        
 
         # Add instructions for using this toolkit
         if instructions is None:
@@ -158,7 +158,7 @@ class KnowledgeTools(Toolkit):
 
     def list_knowledge_content(self) -> list[dict]:
         """Use this tool to list the content in the knowledge base.
-        
+
         Return a list containing everything that is stored in knowledge.
         Each entry in the returned list contains the name, description, and metadata of a content item,
         allowing you to see what information is available in the knowledge base before searching.
@@ -184,8 +184,8 @@ class KnowledgeTools(Toolkit):
         name: Optional[str] = None,
         description: Optional[str] = None,
         metadata: Optional[Dict[str, str]] = None,
-        url: Optional[str] = None) -> str:
-
+        url: Optional[str] = None,
+    ) -> str:
         """Use this tool to add content from a url to the knowledge base.
 
         Args:
@@ -215,7 +215,7 @@ class KnowledgeTools(Toolkit):
     def _get_default_instructions(self) -> str:
         """Generate default instructions based on which tools are enabled."""
         tool_descriptions = []
-        
+
         if self.enable_think:
             tool_descriptions.append("Think")
         if self.enable_search:
@@ -226,18 +226,24 @@ class KnowledgeTools(Toolkit):
             tool_descriptions.append("List Content")
         if self.enable_add_url_content:
             tool_descriptions.append("Add Content from URL")
-        
+
         tools_text = ", ".join(tool_descriptions[:-1])
         if len(tool_descriptions) > 1:
             tools_text += f", and {tool_descriptions[-1]}"
         else:
             tools_text = tool_descriptions[0] if tool_descriptions else "tools"
-        
+
         instructions = f"You have access to the {tools_text} tools that will help you search your knowledge for relevant information. Use these tools as frequently as needed to find the most relevant information.\n\n"
-        
-        if self.enable_think or self.enable_search or self.enable_analyze or self.enable_list_content or self.enable_add_url_content:
+
+        if (
+            self.enable_think
+            or self.enable_search
+            or self.enable_analyze
+            or self.enable_list_content
+            or self.enable_add_url_content
+        ):
             instructions += "## How to use the available tools:\n\n"
-        
+
         tool_num = 1
         if self.enable_think:
             think_text = f"""\
@@ -248,7 +254,7 @@ class KnowledgeTools(Toolkit):
             """
             instructions += dedent(think_text)
             tool_num += 1
-        
+
         if self.enable_search:
             search_text = f"""\
                 {tool_num}. **Search**
@@ -261,7 +267,7 @@ class KnowledgeTools(Toolkit):
             """
             instructions += dedent(search_text)
             tool_num += 1
-        
+
         if self.enable_analyze:
             analyze_text = f"""\
                 {tool_num}. **Analyze**
@@ -275,7 +281,7 @@ class KnowledgeTools(Toolkit):
             """
             instructions += dedent(analyze_text)
             tool_num += 1
-        
+
         if self.enable_list_content:
             list_content_text = f"""\
                 {tool_num}. **List Content**
@@ -284,7 +290,7 @@ class KnowledgeTools(Toolkit):
 
             """
             instructions += dedent(list_content_text)
-        
+
         if self.enable_add_url_content:
             add_url_content_text = f"""\
                 {tool_num}. **Add Content from URL**
@@ -294,28 +300,36 @@ class KnowledgeTools(Toolkit):
             """
             instructions += dedent(add_url_content_text)
             tool_num += 1
-        
+
         guidelines = []
         if self.enable_think:
             guidelines.append("- Do not include your internal chain-of-thought in direct user responses.")
-            guidelines.append("- Use \"Think\" to reason internally. These notes are never exposed to the user.")
-        
+            guidelines.append('- Use "Think" to reason internally. These notes are never exposed to the user.')
+
         if self.enable_think and self.enable_search and self.enable_analyze:
-            guidelines.append("- Iterate through the cycle (Think → Search → Analyze) as many times as needed until you have a final answer.")
+            guidelines.append(
+                "- Iterate through the cycle (Think → Search → Analyze) as many times as needed until you have a final answer."
+            )
         elif self.enable_search and self.enable_analyze:
-            guidelines.append("- Iterate through the cycle (Search → Analyze) as many times as needed until you have a final answer.")
-        
+            guidelines.append(
+                "- Iterate through the cycle (Search → Analyze) as many times as needed until you have a final answer."
+            )
+
         guidelines.append("- When you do provide a final answer to the user, be clear, concise, and accurate.")
-        
+
         if self.enable_search:
-            guidelines.append("- If search results are sparse or contradictory, acknowledge limitations in your response.")
-            guidelines.append("- Synthesize information from multiple sources rather than relying on a single document.")
-        
+            guidelines.append(
+                "- If search results are sparse or contradictory, acknowledge limitations in your response."
+            )
+            guidelines.append(
+                "- Synthesize information from multiple sources rather than relying on a single document."
+            )
+
         if guidelines:
             instructions += "**Important Guidelines**:\n"
             for guideline in guidelines:
                 instructions += f"    {guideline}\n"
-        
+
         return instructions.strip()
 
     FEW_SHOT_EXAMPLES = dedent("""\

@@ -3,14 +3,16 @@ from textwrap import dedent
 from agno.agent import Agent
 from agno.knowledge.embedder.openai import OpenAIEmbedder
 from agno.knowledge.knowledge import Knowledge
-from agno.models.openai import OpenAIChat
 from agno.models.anthropic import Claude
+
+# from agno.models.openai import OpenAIChat
+from agno.os import AgentOS
+from agno.tools.arxiv import ArxivTools
 from agno.vectordb.pgvector import PgVector, SearchType
+
 from db.demo_db import demo_db
 from db.url import get_db_url
-from agno.tools.arxiv import ArxivTools
 from tools.knowledge_tools import KnowledgeTools
-from agno.os import AgentOS
 
 # ============================================================================
 # Setup knowledge base for storing Agno documentation
