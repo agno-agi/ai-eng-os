@@ -3,6 +3,7 @@ from textwrap import dedent
 from agno.agent import Agent
 from agno.knowledge.embedder.openai import OpenAIEmbedder
 from agno.knowledge.knowledge import Knowledge
+from agno.models.openai import OpenAIChat
 from agno.models.anthropic import Claude
 from agno.vectordb.pgvector import PgVector, SearchType
 from db.demo_db import demo_db
@@ -61,7 +62,7 @@ instructions = dedent(
 
     If a paper does not have a summary, you must generate one.
     When storing a paper, always use the PDF URL returned by ArXiv, not the abstract URL.
-    Use the `add_arxiv_content` tool to add papers to the Knowledge Base.
+    Use the `add_url_content` tool to add papers to the Knowledge Base.
 
     You can provide detailed paper summaries, insights, and support comprehensive literature reviews.
     You must always perform a search (either in the Knowledge Base, ArXiv or by Listing the content in the Knowledge Base) before answering any research question.
@@ -115,9 +116,11 @@ instructions = dedent(
 # ============================================================================
 arxiv_agent = Agent(
     name="ArXiv Research Assistant",
+    id="arxiv-agent",
     model=Claude(id="claude-sonnet-4-5"),
+    # model=OpenAIChat(id="gpt-5-mini"),
     db=demo_db,
-    tools=[ArxivTools(), KnowledgeTools(knowledge=knowledge, enable_list_content=True, enable_add_arxiv_content=True)],
+    tools=[ArxivTools(), KnowledgeTools(knowledge=knowledge, enable_list_content=True, enable_add_url_content=True)],
     knowledge=knowledge,
     description=description,
     instructions=instructions,
@@ -128,6 +131,7 @@ arxiv_agent = Agent(
     markdown=True,
     enable_agentic_knowledge_filters=True,
 )
+
 
 # ************* Create AgentOS *************
 agent_os = AgentOS(agents=[arxiv_agent])

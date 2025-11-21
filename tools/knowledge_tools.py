@@ -16,7 +16,7 @@ class KnowledgeTools(Toolkit):
         enable_search: bool = False,
         enable_analyze: bool = False,
         enable_list_content: bool = False,
-        enable_add_arxiv_content: bool = False,
+        enable_add_url_content: bool = False,
         instructions: Optional[str] = None,
         add_instructions: bool = True,
         add_few_shot: bool = False,
@@ -32,7 +32,8 @@ class KnowledgeTools(Toolkit):
         self.enable_search = enable_search or all
         self.enable_analyze = enable_analyze or all
         self.enable_list_content = enable_list_content or all
-        self.enable_add_arxiv_content = enable_add_arxiv_content or all
+        self.enable_add_url_content = enable_add_url_content or all
+        
 
         # Add instructions for using this toolkit
         if instructions is None:
@@ -57,8 +58,8 @@ class KnowledgeTools(Toolkit):
             tools.append(self.analyze)
         if self.enable_list_content:
             tools.append(self.list_knowledge_content)
-        if self.enable_add_arxiv_content:
-            tools.append(self.add_arxiv_content)
+        if self.enable_add_url_content:
+            tools.append(self.add_url_content)
         super().__init__(
             name="knowledge_tools",
             tools=tools,
@@ -178,20 +179,20 @@ class KnowledgeTools(Toolkit):
             for content in contents
         ]
 
-    def add_arxiv_content(
+    def add_url_content(
         self,
         name: Optional[str] = None,
         description: Optional[str] = None,
         metadata: Optional[Dict[str, str]] = None,
         url: Optional[str] = None) -> str:
 
-        """Use this tool to add Arxiv papers to the knowledge base.
+        """Use this tool to add content from a url to the knowledge base.
 
         Args:
-            name: Optional; The name of the paper.
-            description: Optional; A short summary of the paper.
-            metadata: Optional; A dictionary of metadata the paper should be indexed with in the knowledge base.
-            url: Optional; The url of the Arxiv paper.
+            name: Optional; The name of the content.
+            description: Optional; A short summary of the content.
+            metadata: Optional; A dictionary of metadata the content should be indexed with in the knowledge base.
+            url: Optional; The url of the content.
 
         Returns:
             str: A string indicating the status of the addition.
@@ -209,7 +210,7 @@ class KnowledgeTools(Toolkit):
                 name=name,
             )
 
-        return "Successfully added Arxiv content to the knowledge base"
+        return "Successfully added content to the knowledge base"
 
     def _get_default_instructions(self) -> str:
         """Generate default instructions based on which tools are enabled."""
@@ -223,8 +224,8 @@ class KnowledgeTools(Toolkit):
             tool_descriptions.append("Analyze")
         if self.enable_list_content:
             tool_descriptions.append("List Content")
-        if self.enable_add_arxiv_content:
-            tool_descriptions.append("Add Arxiv Paper")
+        if self.enable_add_url_content:
+            tool_descriptions.append("Add Content from URL")
         
         tools_text = ", ".join(tool_descriptions[:-1])
         if len(tool_descriptions) > 1:
@@ -234,7 +235,7 @@ class KnowledgeTools(Toolkit):
         
         instructions = f"You have access to the {tools_text} tools that will help you search your knowledge for relevant information. Use these tools as frequently as needed to find the most relevant information.\n\n"
         
-        if self.enable_think or self.enable_search or self.enable_analyze or self.enable_list_content or self.enable_add_arxiv_content:
+        if self.enable_think or self.enable_search or self.enable_analyze or self.enable_list_content or self.enable_add_url_content:
             instructions += "## How to use the available tools:\n\n"
         
         tool_num = 1
@@ -284,14 +285,14 @@ class KnowledgeTools(Toolkit):
             """
             instructions += dedent(list_content_text)
         
-        if self.enable_add_arxiv_content:
-            add_arxiv_content_text = f"""\
-                {tool_num}. **Add Arxiv Paper**
-                - Purpose: Adds Arxiv papers to the knowledge base.
-                - Usage: Call `add_arxiv_content` with the url of the Arxiv paper to add it to the knowledge base.
+        if self.enable_add_url_content:
+            add_url_content_text = f"""\
+                {tool_num}. **Add Content from URL**
+                - Purpose: Adds content from a url to the knowledge base.
+                - Usage: Call `add_url_content` with the url of the content to add it to the knowledge base.
 
             """
-            instructions += dedent(add_arxiv_content_text)
+            instructions += dedent(add_url_content_text)
             tool_num += 1
         
         guidelines = []

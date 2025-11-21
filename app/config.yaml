@@ -10,6 +10,16 @@ chat:
       - "What are Agno's key features?"
       - "What is the difference between a Team and a Workflow in Agno?"
 
+    arxiv-agent:
+      - "What Arxiv papers have you read?"
+      - "Find a paper that explains the latest AI breakthroughs"
+      - "What are the latest Arxiv papers in the field of quantum computing?"
+
+    general-knowledge-agent:
+      - "What content is in the knowledge base?"
+      - "Add the content from the https://docs.agno.com/llms-full.txt to the knowledge base."
+      - "What content is in the knowledge base about Agno?"
+
     youtube-agent:
       - "Explain this video in simple terms: https://www.youtube.com/watch?v=nLkBNnnA8Ac&t=1s"
       - "Summarize this video: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
