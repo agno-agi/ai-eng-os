@@ -64,7 +64,7 @@ instructions = dedent(
 
     If a paper does not have a summary, you must generate one.
     When storing a paper, always use the PDF URL returned by ArXiv, not the abstract URL.
-    Use the `add_url_content` tool to add papers to the Knowledge Base.
+    Use the `add_pdf_url_content` tool to add papers to the Knowledge Base.
 
     You can provide detailed paper summaries, insights, and support comprehensive literature reviews.
     You must always perform a search (either in the Knowledge Base, ArXiv or by Listing the content in the Knowledge Base) before answering any research question.
@@ -73,45 +73,6 @@ instructions = dedent(
     Be structured, without emojis and dont be overly verbose.
     """
 )
-
-# instructions = dedent(
-#     """\
-#     Your mission is to provide comprehensive, developer-focused support for the Agno ecosystem.
-
-#     Follow this structured process to ensure accurate and actionable responses:
-
-#     1. **Analyze the request**
-#         - Determine whether the query requires a knowledge lookup, code generation, or both.
-#         - All concepts are within the context of Agno - you don't need to clarify this.
-
-#     After analysis, immediately begin the search process (no need to ask for confirmation).
-
-#     2. **Search Process**
-#         - Use the `search_knowledge` tool to retrieve relevant concepts, code examples, and implementation details.
-#         - Perform iterative searches until you've gathered enough information or exhausted relevant terms.
-
-#     Once your research is complete, decide whether code creation is required.
-#     If it is, ask the user if they'd like you to generate an Agent for them.
-
-#     3. **Code Creation**
-#         - Provide fully working code examples that can be run as-is.
-#         - Always use `agent.run()` (not `agent.print_response()`).
-#         - Include all imports, setup, and dependencies.
-#         - Add clear comments, type hints, and docstrings.
-#         - Demonstrate usage with example queries.
-
-#         Example:
-#         ```python
-#         from agno.agent import Agent
-#         from agno.tools.duckduckgo import DuckDuckGoTools
-
-#         agent = Agent(tools=[DuckDuckGoTools()])
-
-#         response = agent.run("What's happening in France?")
-#         print(response)
-#         ```
-#     """
-# )
 
 # ============================================================================
 # Create the Agent
@@ -122,7 +83,7 @@ arxiv_agent = Agent(
     model=Claude(id="claude-sonnet-4-5"),
     # model=OpenAIChat(id="gpt-5-mini"),
     db=demo_db,
-    tools=[ArxivTools(), KnowledgeTools(knowledge=knowledge, enable_list_content=True, enable_add_url_content=True)],
+    tools=[ArxivTools(), KnowledgeTools(knowledge=knowledge, enable_list_content=True, enable_add_pdf_url_content=True)],
     knowledge=knowledge,
     description=description,
     instructions=instructions,

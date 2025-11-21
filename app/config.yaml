@@ -17,7 +17,7 @@ chat:
 
     general-knowledge-agent:
       - "What content is in the knowledge base?"
-      - "Add the content from the https://docs.agno.com/llms-full.txt to the knowledge base."
+      - "Add the content from https://docs.agno.com/llms-full.txt to the knowledge base."
       - "What content is in the knowledge base about Agno?"
 
     youtube-agent:

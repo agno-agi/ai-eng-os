@@ -18,6 +18,7 @@ class KnowledgeTools(Toolkit):
         enable_analyze: bool = False,
         enable_list_content: bool = False,
         enable_add_url_content: bool = False,
+        enable_add_pdf_url_content: bool = False,
         instructions: Optional[str] = None,
         add_instructions: bool = True,
         add_few_shot: bool = False,
@@ -34,7 +35,7 @@ class KnowledgeTools(Toolkit):
         self.enable_analyze = enable_analyze or all
         self.enable_list_content = enable_list_content or all
         self.enable_add_url_content = enable_add_url_content or all
-
+        self.enable_add_pdf_url_content = enable_add_pdf_url_content or all
         # Add instructions for using this toolkit
         if instructions is None:
             self.instructions = self._get_default_instructions()
@@ -60,6 +61,8 @@ class KnowledgeTools(Toolkit):
             tools.append(self.list_knowledge_content)
         if self.enable_add_url_content:
             tools.append(self.add_url_content)
+        if self.enable_add_pdf_url_content:
+            tools.append(self.add_pdf_url_content)
         super().__init__(
             name="knowledge_tools",
             tools=tools,
@@ -197,9 +200,34 @@ class KnowledgeTools(Toolkit):
         Returns:
             str: A string indicating the status of the addition.
         """
-        # if not url.endswith(".pdf"):
-        #     url = url + ".pdf"
-        print("RECEVIED METADATA: ", metadata)
+        if url is not None:
+            self.knowledge.add_content(
+                url=url,
+                metadata=metadata,
+                description=description,
+                name=name,
+            )
+
+        return "Successfully added content to the knowledge base"
+    
+    def add_pdf_url_content(
+        self,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        metadata: Optional[Dict[str, str]] = None,
+        url: Optional[str] = None,
+    ) -> str:
+        """Use this tool to add content from a pdf url to the knowledge base.
+
+        Args:
+            name: Optional; The name of the content.
+            description: Optional; A short summary of the content.
+            metadata: Optional; A dictionary of metadata the content should be indexed with in the knowledge base.
+            url: Optional; The url of the pdf content.
+
+        Returns:
+            str: A string indicating the status of the addition.
+        """
         if url is not None:
             reader = PDFReader()
             self.knowledge.add_content(
@@ -226,7 +254,8 @@ class KnowledgeTools(Toolkit):
             tool_descriptions.append("List Content")
         if self.enable_add_url_content:
             tool_descriptions.append("Add Content from URL")
-
+        if self.enable_add_pdf_url_content:
+            tool_descriptions.append("Add Content from PDF URL")
         tools_text = ", ".join(tool_descriptions[:-1])
         if len(tool_descriptions) > 1:
             tools_text += f", and {tool_descriptions[-1]}"
@@ -241,6 +270,7 @@ class KnowledgeTools(Toolkit):
             or self.enable_analyze
             or self.enable_list_content
             or self.enable_add_url_content
+            or self.enable_add_pdf_url_content
         ):
             instructions += "## How to use the available tools:\n\n"
 
@@ -299,6 +329,16 @@ class KnowledgeTools(Toolkit):
 
             """
             instructions += dedent(add_url_content_text)
+            tool_num += 1
+
+        if self.enable_add_pdf_url_content:
+            add_pdf_url_content_text = f"""\
+                {tool_num}. **Add Content from PDF URL**
+                - Purpose: Adds content from a pdf url to the knowledge base.
+                - Usage: Call `add_pdf_url_content` with the url of the pdf content to add it to the knowledge base.
+
+            """
+            instructions += dedent(add_pdf_url_content_text)
             tool_num += 1
 
         guidelines = []
