@@ -46,10 +46,10 @@ export PARALLEL_API_KEY="YOUR_API_KEY_HERE"
 Run the application using docker compose:
 
 ```sh
-docker compose up -d
+docker compose up --build -d
 ```
 
-This command starts:
+This command builds the Docker image and starts the application:
 
 - The **AgentOS server**, running on [http://localhost:8000](http://localhost:8000).
 - The **PostgreSQL database** for storing agent sessions, knowledge, and memories, accessible on `localhost:5432`.
@@ -80,6 +80,17 @@ docker exec -it ai-eng-os-agent-os-1 python -m agents.agno_knowledge_agent
 ```
 
 This command will add the Agno documentation to the knowledge base.
+
+### Adding F1 data and loading knowledge to SQL Analysis Team locally
+
+To add F1 data and load knowledge to the SQL Analysis Team, run the following commands:
+
+```sh
+docker exec -it ai-eng-os-agent-os-1 python -m scripts.load_f1_data
+docker exec -it ai-eng-os-agent-os-1 python -m teams.data_analysis_team
+```
+
+The `load_f1_data` script will add the F1 data to the database and the `data_analysis_team` script will load the knowledge to the SQL Analysis Team.
 
 ### Cloud Setup
 
@@ -153,7 +164,7 @@ python -m agents.agno_knowledge_agent
 To add knowledge to the SQL Analysis Team, run the following commands:
 
 ```sh
-python scripts/load_f1_data.py
+python -m scripts.load_f1_data.py
 python -m teams.data_analysis_team
 ```
 

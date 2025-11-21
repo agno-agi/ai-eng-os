@@ -6,6 +6,7 @@ from agno.agent import Agent
 from agno.knowledge.embedder.openai import OpenAIEmbedder
 from agno.knowledge.knowledge import Knowledge
 from agno.models.openai import OpenAIChat
+from agno.models.anthropic import Claude
 from agno.team.team import Team
 from agno.tools.reasoning import ReasoningTools
 from agno.tools.sql import SQLTools
@@ -189,7 +190,7 @@ data_analyst_agent = Agent(
 report_generator_agent = Agent(
     name="Report Generator Agent",
     role="Report specialist - present data findings clearly",
-    model=OpenAIChat(id="gpt-5-mini"),
+    model=Claude(id="claude-sonnet-4-5"),
     description=dedent("""\
         You are the Report Generator Agent — a communication expert who transforms
         data analysis into clear, business-friendly reports that executives can act on.
@@ -259,7 +260,6 @@ data_analysis_team = Team(
     name="SQL Analysis Team",
     model=OpenAIChat(id="gpt-5-mini"),
     members=[sql_query_agent, data_analyst_agent, report_generator_agent],
-    tools=[ReasoningTools(add_instructions=True)],
     description=description,
     instructions=instructions,
     db=demo_db,

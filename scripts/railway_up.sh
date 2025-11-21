@@ -7,14 +7,6 @@
 
 set -e  # Exit on any error
 
-# Load .env file if it exists
-if [ -f .env ]; then
-    echo -e "📄 .env file found...\n"
-    set -a #run export command for all variables in .env file
-    source .env
-    set +a
-fi
-
 echo -e "🚂 Starting Railway deployment...\n"
 
 # Initialize a new project on Railway (uncomment if needed)
@@ -26,20 +18,6 @@ railway deploy -t 3jJFCA
 echo -e "⏳ Waiting 10 seconds for database to be created...\n"
 sleep 10
 
-<<<<<<< HEAD
-echo -e "🔧 Creating application service...\n"
-railway add --service agent_os
-
-echo -e "📝 Setting environment variables...\n"
-railway variables --set DB_DRIVER="postgresql+psycopg" --service agent_os
-railway variables --set 'DB_USER=${{pgvector.PGUSER}}' --service agent_os
-railway variables --set 'DB_PASS=${{pgvector.PGPASSWORD}}' --service agent_os
-railway variables --set 'DB_HOST=${{pgvector.PGHOST}}' --service agent_os
-railway variables --set 'DB_PORT=${{pgvector.PGPORT}}' --service agent_os
-railway variables --set 'DB_DATABASE=${{pgvector.PGDATABASE}}' --service agent_os
-railway variables --set "OPENAI_API_KEY=${OPENAI_API_KEY}" --service agent_os
-railway variables --set "PARALLEL_API_KEY=${PARALLEL_API_KEY}" --service agent_os
-=======
 echo -e "🔧 Creating application service with environment variables...\n"
 railway add --service agent_os \
   --variables "DB_DRIVER=postgresql+psycopg" \
@@ -51,7 +29,6 @@ railway add --service agent_os \
   --variables "OPENAI_API_KEY=${OPENAI_API_KEY}" \
   --variables "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" \
   --variables "PARALLEL_API_KEY=${PARALLEL_API_KEY}"
->>>>>>> 2184c559fd9f7860f1e5d4303cbc900a2f00027a
 
 echo -e "🚀 Deploying application...\n"
 railway up --service agent_os -d
