@@ -2,7 +2,7 @@ from io import StringIO
 
 import pandas as pd
 import requests
-from agno.utils.log import logger
+from agno.utils.log import log_info, log_error
 from sqlalchemy import create_engine
 
 from db.url import get_db_url
@@ -20,17 +20,14 @@ files_to_tables = {
 
 
 def load_f1_data():
-    """Load F1 data from S3 into PostgreSQL database"""
-    logger.info("Starting F1 data load from S3...")
-    logger.info(f"Database URL: {get_db_url()}")
+    log_info("Loading F1 data into DB...")
 
     # Create database engine
     engine = create_engine(get_db_url())
 
     # Load each CSV file into corresponding table
     for file_path, table_name in files_to_tables.items():
-        logger.info(f"Loading {file_path} into {table_name} table...")
-
+        log_info(f"Loading {file_path} into {table_name} table...")
         try:
             # Download CSV from S3
             response = requests.get(file_path, verify=False)
@@ -40,13 +37,14 @@ def load_f1_data():
             csv_data = StringIO(response.text)
             df = pd.read_csv(csv_data)
 
+
             # Load into PostgreSQL (replace if exists)
             df.to_sql(table_name, engine, if_exists="replace", index=False)
 
-            logger.info(f"✓ {table_name}: {len(df)} rows loaded")
+            log_info(f"{table_name}: {len(df)} rows loaded")
 
         except Exception as e:
-            logger.error(f"✗ Failed to load {table_name}: {e}")
+            log_error(f"Failed to load {table_name}: {e}")
             raise
 
     logger.info("F1 data load complete! 🏁")
@@ -58,14 +56,4 @@ if __name__ == "__main__":
 
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-    print("🏎️  F1 Data Loader")
-    print("=" * 60)
-    print("Loading F1 historical data (1950-2020) from S3...")
-    print()
-
     load_f1_data()
-
-    print()
-    print("Next steps:")
-    print("1. Load table metadata: python -m teams.data_analysis_team")
-    print("2. Query F1 data via the SQL Analysis Team")

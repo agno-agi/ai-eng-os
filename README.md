@@ -135,7 +135,7 @@ railway down --service pgvector
 
 Careful: This command will delete the AgentOS and PgVector database services from your Railway project.
 
-### Adding knowledge to Agno Knowledge Agent on Railway
+### Adding Knowledge on Railway
 
 To add knowledge to the Agno Knowledge Agent, run the following command:
 
@@ -149,6 +149,13 @@ Once you are in the ssh session, you can run the following command to add knowle
 
 ```sh
 python -m agents.agno_knowledge_agent
+```
+
+To add knowledge to the SQL Analysis Team, run the following commands:
+
+```sh
+python scripts/load_f1_data.py
+python -m teams.data_analysis_team
 ```
 
 ### Connecting the AgnoUI to the AgentOS server

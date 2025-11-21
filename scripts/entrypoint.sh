@@ -17,18 +17,6 @@ if [[ "$WAIT_FOR_DB" = true || "$WAIT_FOR_DB" = True ]]; then
 fi
 
 ############################################################################
-# Load F1 Data
-############################################################################
-
-if [[ "$LOAD_F1_DATA" = true || "$LOAD_F1_DATA" = True ]]; then
-  echo "Loading F1 data into database..."
-  python scripts/load_f1_data.py
-  
-  echo "Loading F1 metadata into knowledge base..."
-  python -m teams.data_analysis_team
-fi
-
-############################################################################
 # Start App
 ############################################################################
 
