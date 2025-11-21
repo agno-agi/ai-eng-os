@@ -1,5 +1,5 @@
 [project]
-name = "mb-agent-os"
+name = "ai-eng-os"
 version = "0.1.0"
 requires-python = ">=3.11"
 readme = "README.md"
@@ -14,6 +14,7 @@ dependencies = [
   "fastapi[standard]",
   "mcp",
   "openai",
+  "pandas",
   "pgvector",
   "psycopg[binary]",
   "pypdf",
@@ -47,7 +48,7 @@ plugins = ["pydantic.mypy"]
 exclude = [".venv*"]
 
 [[tool.mypy.overrides]]
-module = ["pgvector.*", "setuptools.*", "nest_asyncio.*", "agno.*"]
+module = ["pgvector.*", "setuptools.*", "nest_asyncio.*", "agno.*", "pandas", "requests"]
 ignore_missing_imports = true
 
 [tool.uv.pip]

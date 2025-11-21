@@ -46,10 +46,10 @@ export PARALLEL_API_KEY="YOUR_API_KEY_HERE"
 Run the application using docker compose:
 
 ```sh
-docker compose up -d
+docker compose up --build -d
 ```
 
-This command starts:
+This command builds the Docker image and starts the application:
 
 - The **AgentOS server**, running on [http://localhost:8000](http://localhost:8000).
 - The **PostgreSQL database** for storing agent sessions, knowledge, and memories, accessible on `localhost:5432`.
@@ -80,6 +80,17 @@ docker exec -it ai-eng-os-agent-os-1 python -m agents.agno_knowledge_agent
 ```
 
 This command will add the Agno documentation to the knowledge base.
+
+### Adding F1 data and loading knowledge to SQL Analysis Team locally
+
+To add F1 data and load knowledge to the SQL Analysis Team, run the following commands:
+
+```sh
+docker exec -it ai-eng-os-agent-os-1 python -m scripts.load_f1_data
+docker exec -it ai-eng-os-agent-os-1 python -m teams.data_analysis_team
+```
+
+The `load_f1_data` script will add the F1 data to the database and the `data_analysis_team` script will load the knowledge to the SQL Analysis Team.
 
 ### Cloud Setup
 
@@ -134,7 +145,7 @@ railway down --service pgvector
 
 Careful: This command will delete the AgentOS and PgVector database services from your Railway project.
 
-### Adding knowledge to Agno Knowledge Agent on Railway
+### Adding Knowledge on Railway
 
 To add knowledge to the Agno Knowledge Agent, run the following command:
 
@@ -148,6 +159,13 @@ Once you are in the ssh session, you can run the following command to add knowle
 
 ```sh
 python -m agents.agno_knowledge_agent
+```
+
+To add knowledge to the SQL Analysis Team, run the following commands:
+
+```sh
+python -m scripts.load_f1_data.py
+python -m teams.data_analysis_team
 ```
 
 ### Connecting the AgnoUI to the AgentOS server
@@ -182,7 +200,8 @@ The `/agents` folder contains pre-built agents that you can use as a starting po
 
 The `/teams` folder contains pre-built teams that you can use as a starting point.
 
-**Finance Team**: A team of agents that work together to analyze financial data.
+- **Finance Team**: A team of agents that work together to analyze financial data.
+- **Data Analysis Team**: A specialized team that combines SQL querying, data analysis, and report generation for comprehensive insights.
 
 The `/workflows` folder contains pre-built workflows that you can use as a starting point.
 

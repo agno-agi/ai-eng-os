@@ -9,8 +9,10 @@ from agents.finance_agent import finance_agent
 from agents.memory_manager import memory_manager
 from agents.research_agent import research_agent
 from agents.youtube_agent import youtube_agent
+from teams.data_analysis_team import data_analysis_team
 from teams.finance_team import finance_team
 from workflows.business_profile import business_profile_workflow
+from workflows.invoice_processing_workflow import invoice_workflow
 from workflows.research_workflow import research_workflow
 
 # ============================================================================
@@ -32,8 +34,8 @@ agent_os = AgentOS(
         memory_manager,
         youtube_agent,
     ],
-    teams=[finance_team],
-    workflows=[research_workflow, business_profile_workflow],
+    teams=[finance_team, data_analysis_team],
+    workflows=[research_workflow, business_profile_workflow, invoice_workflow],
     config=os_config_path,
 )
 app = agent_os.get_app()
