@@ -28,14 +28,13 @@ cd ai-eng-os
 
 ### Configure API keys
 
-We'll use OpenAI models, please export the `OPENAI_API_KEY` environment variable to get started. We'll also be using Parallel Search to find high-quality content from across the web. To use Parallel Search, you need to export the `PARALLEL_API_KEY` environment variable. The API keys will be provided to you during the workshop.
+For this workshop, we'll be using OpenAI and Anthropic models, please export the `OPENAI_API_KEY` and `ANTHROPIC_API_KEY` environment variables to get started. We'll also be using Parallel Search to search and extract content from the web. To use Parallel Search, you need to export the `PARALLEL_API_KEY` environment variable. The API keys will be provided to you during the workshop.
 
 ```sh
 export OPENAI_API_KEY="YOUR_API_KEY_HERE"
+export ANTHROPIC_API_KEY="YOUR_API_KEY_HERE"
 export PARALLEL_API_KEY="YOUR_API_KEY_HERE"
 ```
-
-**Note:** OpenAI is also used to create embeddings for the knowledge base. To use the Agno Knowledge Agent, you **must** set `OPENAI_API_KEY`.
 
 > [!TIP]
 > You can use the `example.env` file as a template to create your own `.env` file. But you will still need to export the API keys.
@@ -179,6 +178,7 @@ The `/agents` folder contains pre-built agents that you can use as a starting po
 - **Research Agent**: Searches the web for information.
 - **Memory Manager**: Manages the memory of the agents.
 - **YouTube Agent**: Searches YouTube for videos and answers questions about them.
+- **ArXiv Agent**: Searches ArXiv for papers and answers questions about them.
 
 The `/teams` folder contains pre-built teams that you can use as a starting point.
 
