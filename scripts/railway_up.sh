@@ -18,7 +18,7 @@ if [ -f .env ]; then
 fi
 
 # Initialize a new project on Railway (uncomment if needed)
-railway init -n "agno"
+railway init -n "ai-eng-os"
 
 echo -e "📦 Deploying PgVector database...\n"
 railway deploy -t 3jJFCA
