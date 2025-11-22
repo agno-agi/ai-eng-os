@@ -2,7 +2,9 @@
 REM ##########################################################################
 REM Development Setup
 REM - This script creates a virtual environment and installs libraries in editable mode.
-REM - Please install uv before running this script.
+REM - Please install uv before running this script. 
+REM - uv can be installed using the following command on Windows:
+REM - powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 REM - Please deactivate the existing virtual environment before running.
 REM Usage: dev_setup.bat
 REM ##########################################################################
