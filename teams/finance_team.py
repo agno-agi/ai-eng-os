@@ -1,6 +1,6 @@
 from textwrap import dedent
 
-from agno.models.openai import OpenAIChat
+from agno.models.anthropic import Claude
 from agno.team.team import Team
 from agno.tools.reasoning import ReasoningTools
 
@@ -18,13 +18,13 @@ description = dedent("""\
 instructions = dedent("""\
     1) Planning & Routing
        - Decompose the request into data needs (tickers, timeframe, metrics, comparisons).
-       - Route fundamentals/ratios/tables to Finance Agent (YFinanceTools).
-       - Route news/context/sentiment/source gathering to Research Agent (ExaTools).
+       - Route fundamentals/ratios/tables to Finance Agent.
+       - Route news/context/sentiment/source gathering to Research Agent.
        - Run tool calls in parallel when possible; then merge results.
 
     2) Evidence & Integrity
-       - Label data with timestamp and source (Yahoo Finance via YFinanceTools).
-       - For news/context, cite sources found via ExaTools (title, publisher, date, link if available).
+       - Label data with timestamp and source (publication)
+       - For news/context, cite sources (title, publisher, date, link if available).
        - Mark unavailable fields as "N/A". Avoid speculation.
 
     3) Output Structure (concise)
@@ -49,7 +49,7 @@ instructions = dedent("""\
 # ============================================================================
 finance_team = Team(
     name="Finance Team",
-    model=OpenAIChat(id="gpt-5-mini"),
+    model=Claude(id="claude-sonnet-4-5"),
     members=[finance_agent, research_agent],
     tools=[ReasoningTools(add_instructions=True)],
     description=description,

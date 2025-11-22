@@ -1,48 +1,18 @@
 chat:
   quick_prompts:
     agno-mcp-agent:
+      - "What is Agno?"
       - "What is AgentOS?"
       - "What are Agno's key features?"
-      - "What is the difference between a Team and a Workflow in Agno?"
-
-    agno-knowledge-agent:
-      - "What is AgentOS?"
-      - "What are Agno's key features?"
-      - "What is the difference between a Team and a Workflow in Agno?"
-
-    arxiv-agent:
-      - "What Arxiv papers have you read?"
-      - "Find a paper that explains the latest AI breakthroughs"
-      - "What are the latest Arxiv papers in the field of quantum computing?"
-
-    general-knowledge-agent:
-      - "What content is in the knowledge base?"
-      - "Add the content from https://docs.agno.com/llms-full.txt to the knowledge base."
-      - "What content is in the knowledge base about Agno?"
-
-    youtube-agent:
-      - "Explain this video in simple terms: https://www.youtube.com/watch?v=nLkBNnnA8Ac&t=1s"
-      - "Summarize this video: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-      - "What can you do?"
 
     finance-agent:
-      - "AAPL stock price."
+      - "How are my top stocks performing?"
+      - "Prepare an investment brief on Apple (AAPL)."
       - "Summarize key financial metrics for TSLA."
-      - "Analyze the automotive industry: Tesla, Ford, General Motors, and Toyota."
-
-    reasoning-finance-agent:
-      - "AAPL stock price."
-      - "Summarize key financial metrics for TSLA."
-      - "Analyze the automotive industry: Tesla, Ford, General Motors, and Toyota."
-
-    finance-team:
-      - "Analyze current sentiment around AI stocks."
-      - "Analyze the semiconductor market performance focusing on: NVIDIA (NVDA), AMD (AMD), Intel (INTC), and Taiwan Semiconductor (TSM)."
-      - "Analyze the automotive industry: Tesla, Ford, General Motors, and Toyota."
 
     research-agent:
-      - "What are the latest AI breakthroughs this week?"
-      - "Find credible sources about quantum computing trends."
+      - "Write a report on memory for AI agents?"
+      - "Summarize the AI breakthroughs this week?"
       - "What's happening in the global energy markets?"
 
     memory-manager:
@@ -50,12 +20,17 @@ chat:
       - "I live in New York City"
       - "I like to hike and swim on the weekends"
 
-    sql-analysis-team:
-      - "Who has won the most F1 championships?"
-      - "Show me the top 5 constructors by total race wins"
-      - "Compare Lewis Hamilton's and Michael Schumacher's championship years"
+    youtube-agent:
+      - "Summarize this video: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      - "Explain this video in simple terms: https://www.youtube.com/watch?v=nLkBNnnA8Ac&t=1s"
+      - "What can you do?"
 
-    content-creation-workflow:
+    finance-team:
+      - "Analyze current sentiment around AI stocks."
+      - "Analyze the semiconductor market performance focusing on: NVIDIA (NVDA), AMD (AMD), Intel (INTC), and Taiwan Semiconductor (TSM)."
+      - "Analyze the automotive industry: Tesla, Ford, General Motors, and Toyota."
+
+    research-workflow:
       - "Research and write an article about the latest trends in AI development"
       - "Create content about the future of quantum computing"
       - "Write about emerging cybersecurity threats in 2025"

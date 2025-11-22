@@ -1,4 +1,3 @@
-from os import getenv
 from textwrap import dedent
 from typing import Dict, List, Optional
 
@@ -57,7 +56,7 @@ web_researcher = Agent(
     db=demo_db,
 )
 
-exa_researcher = Agent(
+parallel_researcher = Agent(
     name="Parallel Researcher",
     role="Perform deep semantic search for high-quality content",
     model=OpenAIChat(id="gpt-5-mini"),
@@ -105,32 +104,6 @@ writer = Agent(
     db=demo_db,
 )
 
-reviewer = Agent(
-    name="Reviewer",
-    role="Review and refine content for quality and accuracy",
-    model=OpenAIChat(id="gpt-5-mini"),
-    description=dedent("""\
-        You are the Reviewer — an agent that reviews content for quality, accuracy,
-        clarity, and completeness.
-        """),
-    instructions=dedent("""\
-        **Input:** A report on the user's request based on the research.
-        **Output:** A final polished version of the content with any necessary edits.
-        **Instructions:**
-        1. Review the written content thoroughly.
-        2. Check for factual accuracy based on the research.
-        3. Ensure the content is well-structured and flows logically.
-        4. Verify that all sources are properly cited and that the content is accurate and complete.
-        6. Provide a final polished version with any necessary edits.
-        7. This is the final report so make sure that you do not include any information not relevant to report. 
-        8. Your output should be a final polished version of the content with any necessary edits.
-        9. Do not share any notes or internal thoughts or comments in your output. Make sure the output is just the final report.
-        """),
-    add_history_to_context=True,
-    markdown=True,
-    db=demo_db,
-)
-
 
 async def consolidate_research_step_function(input: StepInput) -> StepOutput:
     """Consolidate the research from the different agents"""
@@ -166,15 +139,11 @@ web_research_step = Step(
     name="Web Research",
     agent=web_researcher,
 )
-exa_research_step = Step(
+parallel_research_step = Step(
     name="Parallel Research",
-    agent=exa_researcher,
+    agent=parallel_researcher,
 )
-researcher_steps: List[Step] = [hn_research_step, web_research_step]
-
-# Add Exa researcher only if API key is available
-if getenv("EXA_API_KEY"):
-    researcher_steps.append(exa_research_step)
+researcher_steps: List[Step] = [hn_research_step, web_research_step, parallel_research_step]
 
 research_consolidation_step = Step(
     name="Consolidate Research",
@@ -184,10 +153,6 @@ research_consolidation_step = Step(
 writer_step = Step(
     name="Writer",
     agent=writer,
-)
-reviewer_step = Step(
-    name="Reviewer",
-    agent=reviewer,
 )
 
 # ============================================================================
@@ -203,7 +168,6 @@ research_workflow = Workflow(
         Parallel(*researcher_steps, name="Research Phase"),  # type: ignore
         research_consolidation_step,
         writer_step,
-        reviewer_step,
     ],
     db=demo_db,
 )
