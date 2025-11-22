@@ -29,3 +29,8 @@ chat:
       - "Analyze current sentiment around AI stocks."
       - "Analyze the semiconductor market performance focusing on: NVIDIA (NVDA), AMD (AMD), Intel (INTC), and Taiwan Semiconductor (TSM)."
       - "Analyze the automotive industry: Tesla, Ford, General Motors, and Toyota."
+
+    agno-knowledge-agent:
+      - "What is Agno?"
+      - "What is AgentOS?"
+      - "What are Agno's key features?"

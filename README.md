@@ -60,6 +60,16 @@ Once started, you can:
 - Open the [AgentOS UI](https://os.agno.com)
 - Login and add `http://localhost:8000` as a new AgentOS. You can call it `Local AgentOS` (or any name you prefer).
 
+### Load Knowledge Base for the Agno Knowledge Agent
+
+The Agno Knowledge Agent is a minimal example of agentic search. It loads the Agno documentation into a local knowledge base and answers questions about the platform.
+
+To populate the knowledge base, run the following command:
+
+```sh
+docker exec -it ai-eng-os-agent-os-1 python -m agents.agno_knowledge_agent
+```
+
 ### Stop the application
 
 When you're done, stop the application using:

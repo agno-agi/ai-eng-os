@@ -2,6 +2,7 @@ from pathlib import Path
 
 from agno.os import AgentOS
 
+from agents.agno_knowledge_agent import agno_knowledge_agent
 from agents.agno_mcp_agent import agno_mcp_agent
 from agents.finance_agent import finance_agent
 from agents.memory_manager import memory_manager
@@ -20,7 +21,7 @@ os_config_path = str(Path(__file__).parent.joinpath("config.yaml"))
 # ============================================================================
 agent_os = AgentOS(
     id="ai-eng-os",
-    agents=[agno_mcp_agent, finance_agent, research_agent, memory_manager, youtube_agent],
+    agents=[agno_mcp_agent, finance_agent, research_agent, memory_manager, youtube_agent, agno_knowledge_agent],
     teams=[finance_team],
     workflows=[research_workflow],
     config=os_config_path,
