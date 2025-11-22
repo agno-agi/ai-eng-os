@@ -21,7 +21,7 @@ os_config_path = str(Path(__file__).parent.joinpath("config.yaml"))
 # ============================================================================
 agent_os = AgentOS(
     id="ai-eng-os",
-    agents=[agno_mcp_agent, finance_agent, research_agent, memory_manager, youtube_agent, agno_knowledge_agent],
+    agents=[agno_mcp_agent, agno_knowledge_agent, finance_agent, research_agent, memory_manager, youtube_agent],
     teams=[finance_team],
     workflows=[research_workflow],
     config=os_config_path,
